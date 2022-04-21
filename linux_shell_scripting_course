@@ -1,0 +1,1575 @@
+5-4-2022:
+
+______________
+LINUX HISTORY|
+_____________|
+
+Linux is a well-known and sophisticated operating system capable of handling activities from multiple users simultaneously. The development of Unix/Linux started around 1969 at AT&T Bell Labs by Ken Thompson andd Dennis Ritchie.
+
+LINUX PREFACE
+-Linux system functions on the Kernel, which is the heart of the OS interacting with hardware
+-shell, the utility processing the user requests i,e Bourne shell
+-commands and utilities, which are interpreted in the shell 
+-Files and Directories, all the data of linux organized in to files and files organized into directories and further organized to tree-like structure called Filesystem.
+
+Linux Calculator utility:
+
+-To show the calendar, press 'cal'
+
+Linux Administration:
+
+User information: 
+-To change the user password, firstly know the name of the user through 
+'whoami'
+
+Password changing:
+-To change the password now press
+'passwd' (or) '<user name> passwd'
+
+To know all the users' information:
+'users'
+
+To know the information about the present user logged in
+'who'
+
+LOGGING OUT OF THE SYSTEM
+
+Logging out of the system has different options based on the personalisation
+
+'halt' brings the system down immediately without saving 
+'init 0' Powers off the system using predefined scripts after saving the data
+'init 6' Reboots the system by shutting down completely and restarts
+'poweroff' shuts down the system by powering off
+'reboot' Reboots the system
+'shutdown' Shuts down the system. Need super user or root privileges
+
+________________________
+FILE MANAGEMENT IN UNIX|
+_______________________|
+
+-All the data in Unix is organized into Files
+-All Files are organized into Directories
+-All Directories are organized into structure called Filesystem
+
+Types of Files in Unix:
+
+Ordinary Files : It is a file that contains data, text or program instructions
+
+Directories : Directories store both special and ordinary files.
+
+Special Files : Some special files provide access to hardware devices such as Hard drives, CD-ROM drives, modems and Ethernet adapters. Other special files are similar to aliases or shortcuts and enable you to access a single file using different names
+
+LISTING FILES
+
+Listing the directories is most important to know the various other details
+
+'ls' displays the files in a simple way line-by-line 
+'ls -l' displays the files in long listing format+memory in bytes
+'ls -lh' displays the files in human readable memory(MB)+long listing
+'ls -lht' displays files in long format+sorting based on recent edit
+
+Information about the long listed format columns:
+
+First column : Represents the permissions dir/file+owner+groups+others
+Second column: Memory blocks taken by the file or directory
+Third column : Represents the owner of the file, who created it
+Fourth column: Group to which the user belongs to. as everyone has it.
+Fifth column : Size in bytes. If 'h' flag used, shows in K(Kb) or M(Mb)
+Sixth Column : date and time created or modified for the last time.
+Sevent column: Represents the file or directory name
+
+FILE SPECIFIERS
+
+Specifiers indicate the TYPE of the file ible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_filef it is a File or a Directory
+as in example below when 'ls -lh' is typed
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Downloads]$ls -lh
+total 14M
+-rw-rw-r-- 1 ansible ansible 400K Nov 30 19:22  AWS.pdf
+drwxrwxr-x 5 ansible ansible 4.0K Mar 31 14:48  bash_pracise_files
+drwxrwxr-x 9 ansible ansible 4.0K Mar 11 19:21  forme
+drwxrwxr-x 4 ansible ansible 4.0K Mar 19 20:07  GalVault
+-rw-rw-r-- 1 ansible ansible  80K Dec 26 10:54  linux.pdf
+---------
+
+'-' specifies to a normal file
+'b' Block special file. Block i/o device files like physical Hard drives
+'c' character special file. Raw i/o device files like physical hardrives'd' Directory File that contians listing of other files and directories
+'l' Symbolic link file on any regular file
+'p' Named Pipe. A mechanism for interprocess communication
+'s' Socket used for interprocess communication
+
+METACHARACTERS
+
+Metacharacters have a special meaning in Linux. For example, '*' and '?'
+metacharacters. We use '*' to match 0 or more characters or instances and '?' matches with a single character.
+
+-For ex, a directory has different format files and also few image files namely images (6).jpeg and images (7).jpeg, include '.jpeg' files, then to indicate, or call them 'ls im*.jpeg' and shows as below
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls im*.jpeg
+'images (6).jpeg'  'images (7).jpeg'
+
+Here '*' is nothing but 'All occurances'. Displays that start with 'im' and end with '.jpeg'
+
+-Another ex, if anything that ends with '.txt', we can indicate as 
+'ls *.txt'
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls *.txt
+'ms office 16 ProPlusRetail Product keys.txt'  'ms Product keys.txt'
+
+In the above, shows all the occurances of the '.txt' files
+
+HIDDEN FILES
+
+The first character of the hidden files starts with '.'(dot).
+
+'.profile' The Bourne shell(sh) initialization script
+'.rhosts' The remote shell configuration file
+
+To list all the invisible files, specify flag '-a' option in ls 
+'ls -a'
+
+Single dot('.'): represents the current directory
+Double dot('..'): represents the previous directory.
+
+CREATING FILES
+
+Creating of files in Unix systems can be as simple as typing 
+'vim <filename>'
+
+The above command opens a file with a given filename. Press 'i' to enter into edit mode and can start writing the content. Once done writing the content to the file, click 'ESC' and then 'shift+ZZ' returns to the terminal saving the written file.
+
+EDITING THE FILES
+
+To edit the filenames, 
+'vim <filename>'
+
+Once the file is opened to move to difference directions, press 
+'i' to insert mode and then start editing
+'esc' to toggle to 'no-edit' mode
+'h' to move to left side
+'l' to move to right side
+'j' to move to down side
+'k' to move to up side 
+
+DISPLAYING CONTENT OF FILES
+
+Using 'cat' command, the content of a file can be seen.
+'cat <filename>'
+
+Display the line numbers using '-b' flag as below
+'cat -b <filename>'
+
+COUNTING WORDS IN A FILE USING 'wc'(WORD COUNT) COMMAND
+
+Word count is another command that can be used to count words in file
+'wc <filename>'
+
+For ex, 'wc <filename' as below shows
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$wc 'ms Product keys.txt' 
+  31  335 3469 ms Product keys.txt
+---------
+
+The following columns for a file named "ms Product keys.txt" shows
+First column : Represents the total number of lines in the file
+Second column: Represents the total number of words in the file.
+Third column : Represents the total number of bytes in the file.
+Fourth column: Represents the filename
+
+-To get the word count data to all the files, we can also find as below
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$wc 'ms Product keys.txt' 'ms office 16 ProPlusRetail Product keys.txt' 
+  31  335 3469 ms Product keys.txt
+  37   14  460 ms office 16 ProPlusRetail Product keys.txt
+  68  349 3929 total
+---------
+
+RENAMING FILES IN UNIX
+
+To change the name of a file, use move (mv) command in another way
+
+'mv <old_name> <new_name>'
+
+DELETING FILES IN UNIX
+
+To delete any file, use 'rm' (remove) command 
+'rm <filename>'
+
+To remove or delete multiple files,
+'rm <file1> <file2> <file3> <file4>...<file n>'
+
+
+STANDARD UNIX STREAMS
+
+Under the normal circumstances, every Unix program has three streams (files) opened for it when it starts up
+
+stdin : This is referred to as 'standard input' and the associated file descriptor is 0. Represented also as 'STDIN'. The Unix program will read the default input form STDIN.
+
+stdout : This is referred to as 'standard output' and the associated file descriptor is 1. This is represented as STDOUT. The Unix program will write the default output at STDOUT
+
+stderr : This is referred to as the 'standard error' and the associated file descriptor is 2. This is also represented as STDERR. The Unix program will write all the error messages at STDERR.
+
+____________
+DIRECTORIES|
+___________|
+
+A directory is a file the solo job is to store the files names and the related information. All the files, whether ordinary, special ro directory are contained in directories.
+
+Unix uses a hierarchical structure for organizing the files and directories also known as directory tree. The tree has single root node (/) and all the other directories are contained below it.
+
+HOME DIRECTORY
+
+The directory which most of work done on is the Home directory. Even the root terminal is in 'Home' directory by default in the terminal. It is denoted by '~' symbolically and technically, it is '/home/ansible'
+To know the present directory in which you are, type below command
+'pwd'
+
+To go to the previous directory or toggle between now and the previous,then  type
+'cd -'
+
+ABSOLUTE OR RELATIVE PATHNAMES
+
+Directories will have Absolute and relative paths as Absolute means the path that is expressed from the root directory i.e for example, if the present terminal location is in Downloads. That means, 
+'/home/ansible/Downloads' is Absolute path
+
+and to go to a directory called 'Notes' inside the 'Downloads' Directorywe use, './Notes' is a Relative path
+
+Absolute paths only have address from root directory(/). Whereas,
+Relative path are expressed from the present location to the another location to which you want to move. 
+
+LISTING DIRECTORIES
+
+To list the directories, you can also use like below
+'ls <dirname>'
+
+To list the files in a directory, we can also show as below
+'ls <dirname>/<sub-dirname>/'
+ex: ls /usr/local
+
+CREATING DIRECTORIES
+
+To create any directory, we use below
+'mkdir <directory_name>'
+
+The mkdir command produces no output if it successfully creates the requested directory.
+
+To create any directory inside the existing directory, 
+'mkdir /usr/new_dir'
+
+To create multiple directories under the current directory, the command used is
+'mkdir <directory1> <directory2>'
+
+CREATING PARENT DIRECTORIES
+
+To create the non-existing subdirectories also called parent directories, use 'p' flag as below.
+'mkdir -p ~/Notes/inside1/inside2'
+
+REMOVING DIRECTORIES IN UNIX
+
+To remove the directories in Unix, 
+'rmdir <directory_name>'
+
+To remove multiple directories, use the below command as below
+'rmdir <directory1> <directory2> <directory3> <directory4>'
+
+*rmdir produces no output on the successful execution
+
+CHANGING DIRECTORIES ON UNIX
+
+Changing the directory from one to another by specifying a valid absolute or relative path as below.
+'cd <dirname>'
+ex: 'cd /usr/local/bin'
+
+changes to the directory /usr/local/bin. 
+
+RENAMING DIRECTORIES IN UNIX
+
+The 'move' command can be used to rename a directory as below
+<mv <old_dir_name> <new_dir_name>
+ex: mv Notes Notes_LINUX
+
+THE DIRECTORIES DOT('.') and DOT DOT('..')
+
+*The dot('.') notation in Unix in case of a directory specifies 'current working directory' 
+*The dot dot ('..') notation in Unix in case of a directory specifies 'one level above or below from the present directory'. It can be toggled from the current to above directory.
+
+we can use as below 
+'cd <..>'
+If we are in '/home/ansible/Documents/AWS/AWS CLI/' and we have to move to '/home/ansible/Downloads' then below is enough
+ex: 'cd '../../../Downloads' will get you to the Downloads directory
+
+_________________________
+FILE PERMISSIONS ON UNIX|
+________________________|
+
+File permissions on a file in Unix provide access modes on a file. It ensures to provide how a file have to be operated. File ownership is an important component of Unix that provides	a secure method for storing files. Every file in Unix has the following attributes 
+
+Owner permissions : The owner's permissions determines what all the actions that an owner of the file can perform and how limited to others
+
+Group permissions : The group's permissions determines what actions that a member of a group that a file belongs to, can perform on a file.
+
+Other(world) permissions: The permissions for others indicate what actions others can perform on file.
+
+THE PERMISSION INDICATORS
+
+The Permissions on the files are shown when 'ls -l' is typed.
+'ls -l'
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$ls -l 
+total 228
+-rwxrwxr-x  1 ansible ansible     52 Nov 19 13:14  ana.sh
+-rw-rw-r--  1 ansible ansible    110 Mar  8 13:56  a.txt
+drwxrwxr-x  5 ansible ansible   4096 Apr  5 17:24  Desktop
+drwxr-xr-x 16 ansible ansible   4096 Mar 31 22:19  Documents
+drwxr-xr-x  6 ansible ansible   4096 Apr  1 18:06  Downloads
+-rwxrwxrwx  1 ansible ansible     53 Mar 15 19:24  files_details
+-rw-rw-r--  1 ansible ansible 144107 Mar 26 19:05  garuda.jpg
+drwxrwxr-x  4 ansible ansible   4096 Mar  6 20:38  GNUstep
+-rw-rw-r--  1 ansible ansible    157 Apr  6 07:45  k
+-rw-rw-r--  1 ansible ansible    785 Apr  1 16:04  MOK.der
+-rw-------  1 ansible ansible   1704 Apr  1 16:04  MOK.priv
+drwxr-xr-x  2 ansible ansible   4096 Mar 19 19:02  Music
+
+---------
+
+In the above, first column represents different access modes i.e., the permission associated with a file or a directory.
+
+The permissions are broken in to groups of threes and each position in th group denotes specific permission, in order of : read (r), write (w), execute (x)-
+
+-rwxrwxr-x
+
+The first character decides if it is a Directory or a file. If it is a directory, then the first charactier would be 'd' or '-' for a file
+
+The first three characters (2,3,4) represents the permissions for the file's owner. For ex, owner in the above notation has read (r), write (w) and execute (x)
+
+The next three group of characters(5-7) consists of the permissions for the 'group' to which the file belongs. For ex, in the above one, group has all read, write and execute (rwx) permissions.
+
+The last group of three characters(8-10) represents the permissions for everyone else. For ex in the above one, 'others' has only read and execute (r,x) permissions. 
+
+FILE ACCESS MODES
+
+The permissions of a file are the first line of defense in security of Unix system. The basic building blocks of Unix permissions are read (r), write (w) and execute (x)
+
+Read (r) : Grants capability to read i.,e view the contents of a file
+Write(w) : Grants capability to modify or remove the contents of file
+Execute(x):Users with execute permissions can run a file as a program
+
+DIRECTORY ACCESS MODES
+
+Directory access modes are almost same but a little different to those of files.
+
+READ : Read Acess to a directory means that the user can read the contents. The user can look at the 'filenames' inside the directory.
+
+Write: Write Access means that the user can add or delete files from the directory
+
+Execute: Executing a directory means to have permission to enter a directory. If a user has no permission to directory, the following error shows on the screen.
+
+----------
+#making a directory
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$mkdir trial
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial/
+total 0
+
+#check for the permissions for 'trial' directory
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l
+total 44
+drwxrwxr-x 2 ansible ansible 4096 Apr  7 11:02  trial
+
+#Removed the permissions for the 'trial' directory
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod 000 trial/
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l
+total 44
+d--------- 2 ansible ansible 4096 Apr  7 11:02  trial
+
+#The directory 'trial' is being denied the permission to enter
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls trial/
+ls: cannot open directory 'trial/': Permission denied
+
+---------
+
+CHANGING THE PERMISSIONS TO A FILE OR A DIRECTORY IN UNIX
+
+To change the permissions to a file or a directory in linux is to use the symbolic mode to add, delete or specify the permissions using 'chmod' operator along with the other specifiers as below
+
+'+' Adds the designated permissions to a file or a directory
+'-' Removes the designated permissions to a file or a directory
+'=' Assign/Sets the designated permissions
+
+*** '=' permission simply assigns permissions at-a-time. To add one by one use '+' operator.
+Here's is an ex,. using test file 'trial_file'
+
+---------
+
+#create a file 'trial_file'
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$touch trial_file
+
+#watch the permission
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rw-rw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#Added the missing permissions for the file using '+'
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u+x trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#Removed the 'rwx' permissions using '-'
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u-rwx trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+----rw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#Assigning the 'rw' permissions for the file using '='
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u=rw trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rw-rw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#Assigned the 'rwx' permissions agian using the '=' operator
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u=rwx trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+---------
+
+Here's is how a file can be given permission to all the users to give corresponding permissions as below
+
+---------
+
+#Viewing the permissions on file 'trial_file'
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#Wantedly removed permissions to test if it is working
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u-x trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod o-r,g-r trial_file
+ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rw--w---- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+#GIVING THE PERMISSIONS SIMUTANEOUS ON A SINGLE LINE AS BELOW
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod u+x,g+rw,o+r trial_file
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+---------
+
+USING CHMOD WITH ABSOLUTE PERMISSIONS
+
+The second way to modify permissions with the 'chmod' command is to use a number to specify each of permission for the file using binary system.
+
+Permissions     specifiers
+-rwx------      700
+----rwx---      070
+-------rwx      007
+
+------------------table----------------------------------------------
+Number	Octal Permission Representation	Ref
+
+0	No permission	                                        ---
+1	Execute permission	                                --x
+2	Write permission	                                -w-
+3	Execute & write permission: 1 (execute) + 2 (write) = 3	-wx
+4	Read permission	                                        r--
+5	Read & execute permission: 4 (read) + 1 (execute) = 5	r-x
+6	Read & write permission: 4 (read) + 2 (write) = 6	rw-
+7	All permissions: 4 (read) + 2 (write) + 1 (execute) = 7	rwx
+
+------------------------------end------------------------------------
+
+
+The below shows an example based on the above  illustration values. 
+
+---------
+# Changing the permissions using the values as below
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwxrw-r-- 1 ansible ansible 0 Apr  7 11:35 trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod 000 trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial
+total 0
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+---------- 1 ansible ansible 0 Apr  7 11:35 trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod 600 trial_file
+ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rw------- 1 ansible ansible 0 Apr  7 11:35 trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod 740 trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwxr----- 1 ansible ansible 0 Apr  7 11:35 trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chmod 710 trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file
+-rwx--x--- 1 ansible ansible 0 Apr  7 11:35 trial_file
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$
+
+---------
+
+CHANGING OWNERS AND GROUPS
+
+While creating an account on Unix, It assigns an Owner ID and a Group ID to each user. All the permissions mentioned are also assigned based on the Owner and the Groups.
+
+Two commands are available to change the Owner and the Group of files
+
+chown : The 'chown' command stands for 'Change Owner' and is used to change the owner of a file.
+
+chgrp : The 'chgrp' command stands for 'Change Group' and is used to change the group of a file.
+
+CHANGING OWNERSHIP
+
+The 'chown' command changes the ownership of a file. Below is usage
+'chown <user> <filelist>'
+
+***The value of the user can be either the name of a user or a user id on the system
+
+for ex, chown ansible trial_file
+
+---------
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chown ansible trial_file 
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwx--x--- 1 ansible ansible 0 Apr  7 11:35 trial_file
+
+---------
+
+***In the above terminal shot, changes the owner of the 'trial_file' to the user ansible
+
+***The SUPER USER, ROOT has the unrestricted capabilities to change the ownership of any file but normal users can change the ownership of only files that they own.
+
+CHANGING THE GROUP OWNERSHIP
+
+The chgrp command changes the group ownership of a file as below.
+
+'chgrp <group> <filelist>'
+
+In the above, the value of a group can be 'name of a group' or 'The group id (GID)' of a group on the system.
+
+Observe the below example as an illustration
+
+---------
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$chgrp adm trial_file 
+ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l trial_file 
+-rwx--x--- 1 ansible adm 0 Apr  7 11:35 trial_file
+
+---------
+
+SUID AND SGID FILE PERMISSION
+
+-When a command is executed, it will have to be executed with special rivileges in order to accomplish its task
+-As an example, when you change your password with passwd command, your new password is stored in the file '/etc/shadow'.
+-As a regular user, you do not have 'read' or 'write' access to above file for security reasons, but when to change your password, you need to have write permission to this file. 
+-So, the 'passwd' command has to give extra permissions so that you can write to the file 'etc/shadow'.
+-Additional permissions are given to programs via a mechanism known as the "Set User ID (SSID) and Set Grouo ID (SGID)" bits.
+-When you execute a program that has the SUID bit enabled, you inherit the permissions of that program's owner. Programs that do not have the SUID bit set are run with the permissions of the user who started the program.
+-This is the case with SGID as well. Normally, programs execute with your group permissions, but instead your group will be changed just for this program to the group owner of the program
+-The SUID and SGID bits will appear as the letter 's' if the permission is available. The 'SUID' "s" bit will be located in the permission bits here the owners' execute permissions normally resides.
+
+For ex, the command
+ls -l /usr/bin/passwd
+
+---------
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Desktop]$ls -l /usr/bin/passwd
+-rwsr-xr-x 1 root root 68208 Jul 15  2021 /usr/bin/passwd
+
+---------
+
+From the above terminal shot, SUID bit is set and that the command is owned by the root. A capital letter S in the execute position instead of a lowercase s indicate that the execute bit is not set.
+
+If the sticky bit is enabled on the directory, files can only be removed if you are one of the following users as below
+-The owner of the sticky directory
+-The owner of the file being removed
+-The super user, root
+
+To set the SUID and SGID bits for any directory try the following command 
+'chmod ug+s <directory_name>'
+'ls -l <directory_name>'
+drwsr-sr-x 2 root root  4096 Jun 19 06:45 '<directory_name>'
+
+____________
+ENVIRONMENT|
+___________|
+
+Environment is the most important concept in Unix as it has Environmental variables. Environment is defined by the Environment variables. Some are set by the system, some by the shell, some by you and some by any program that loads another program.
+
+An environment variable is a variable that is to offset some parameter so the environment works correctly and finely
+
+For ex, environment variables for PATH is set as 
+---------
+bash: /home/ansible/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin: No such file or directory
+---------
+As we can see the above, whenever any program is downloaded and to be installed, the interpreter will search in the above directories to index and make it a source for the program to run.
+For ex2, environment variable HOME returns the bolow when prompted
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Documents/LINUX]$$HOME
+bash: /home/ansible: Is a directory
+---------
+
+As the above shows environment variables are all set by the system, we can also set our own variables
+
+-To set variables as per the Unix, all variables are set only in capital letters as per Unix conventions.
+-variables are set with no spaces between and set with '=' as below
+ex: A=8
+
+____________________________________________
+-***To retrieve the variable from the system it is accompanied with '$'
+-For ex; $A gives 8
+
+***To look up on variables that the shell passed Environment variables only, type 'env' in the terminal. There is another command that has Environmental variables but also has local and other variables and functions. For that type 
+'set'
+
+***To make a local variable to Environmental variable, type as below
+'export <variable_name=variable_value>'
+
+____________________________________________
+
+
+When the shell window is opened, it undergoes a phase called initialization to set up the environment. This is usually a two-step process that involves reading the following
+-'/etc/profile'
+-'./profile'
+-'.bashrc'
+
+The above process is as follows:
+-The shell checks  to see whether the file '/etc/profile' exists
+-If it exists, the shell reads it. Otherwise, this file is skipped and no error message is displayed
+-The shell checks to see whether the file .profile exists in the home directory
+-If it exists, then the shell reads it. Otherwise, it will skip and no error message is displayed.
+-As soon as these files have been read, the shell displays the prompt and the commands then typed can be executed.
+
+
+THE .profile FILE
+
+-The file '/etc/profile' is maintained by the system administrator and contains shell initialization information required by all the users on that system.
+
+-The file .profile is under your control and you can add as much as customisation information you want to this file. It includes 
+-the type of teminal you are using
+-A list of directories in which to locate the commands
+-A list of varibale affecting the look and fell of the terminal
+
+-.profile is located in the 'Home' directory of the system.
+
+SETTING THE TERMINAL TYPE
+
+Terminal is automatically configured by either the logic or getty programs. In incorrectly configured, set the terminal to the lowest common denominator as below
+'TERM=vt100'
+
+SETTING THE PATH
+
+***Before executing the command on the terminal, The system has to locate
+the command or the source through which it can be run.
+
+The 'PATH' variable specifies the location in which the shell should look for the commands. Usually the Path variable is set as follows
+'PATH=/bin:/usr/bin'
+
+In the above each individual entries are separated by the colon(:) are directories. If you request the shell to execute a command and it cannot find in any of these directories, then it displays like below
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Documents/LINUX]$TERM
+TERM: command not found
+---------
+
+PS1 and PS2 variables
+
+-There are variables like PS1 and PS2 which are primary & secondary prompts. 
+-The characters that the shell displays as your command prompt are stored in the variable 'PS1'. As soon as you change it, it'll be displayed on the command prompt. 
+
+-'PS1' variable has certain escape characters that form the command prompt. Below are the escape sequences that can be used as value arguments	for 'PS1'. Optimal usage of escape characters is simple as it does not overwhelm the prompt with all the information.
+
+------------------table----------------------------------------------
+Sr.No.	Escape Sequence & Description
+1	\t  Current time, expressed as HH:MM:SS
+2	\d  Current date, expressed as Weekday Month Date
+3	\n  Newline
+4	\s  Current shell environment
+5	\W  Working directory
+6	\w  Full path of the working directory
+7	\u  Current user’s username
+8	\h  Hostname of the current machine
+9	\#  Command number of the current command. Increases when a new command is entered
+10	\$  If the effective UID is 0 (that is, if you are logged in as root), end the prompt with the # character; otherwise, use the $ sign
+-------------------------end-----------------------------------------
+
+
+-By making changes in PS1 in '.profile' file in the 'home' directory, the command prompt is also changed. 
+-When you issue a command that is 'incomplete', the shell will display a secondary prompt and wait for you to complete the command and hit Enter again.
+
+-The default secondary prompy is '>'. But can be changed by re-defining the PS2 shell variable.
+
+ENVIRONMENT VARIABLES
+
+Partial list of important environmental variables. These variables are set and accessed as mentioned below.
+
+---------------------------------Table--------------------------------
+Sr.No.	Variable & Description
+1    DISPLAY  Contains the identifier for the display that X11 programs should use by default.
+2    HOME Indicates the home directory of the current user: the default argument for the cd built-in command.
+3    IFS  Indicates the Internal Field Separator that is used by the parser for word splitting after expansion.
+4   LANG LANG expands to the default system locale; LC_ALL can be used to override this. For example, if its value is pt_BR, then the language is set to (Brazilian) Portuguese and the locale to Brazil.
+5    LD_LIBRARY_PATH A Unix system with a dynamic linker, contains a colonseparated list of directories that the dynamic linker should search for shared objects when building a process image after exec, before searching in any other directories.
+6    PATH   Indicates the search path for commands. It is a colon-separated list of directories in which the shell looks for commands.
+7    PWD  Indicates the current working directory as set by the cd command.
+8    RANDOM  Generates a random integer between 0 and 32,767 each time it is referenced.
+9   SHLVL  Increments by one each time an instance of bash is started. This variable is useful for determining whether the built-in exit command ends the current session.
+10   TERM   Refers to the display type.
+11   TZ   Refers to Time zone. It can take values like GMT, AST, etc.
+12   UID   Expands to the numeric user ID of the current user, initialized at the shell startup.
+------------------------------end-------------------------------------
+
+
+Following is the sample example for showing few environmental variables
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$echo $HOME
+/home/ansible
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$echo $TERM
+xterm-256color
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$echo $PATH
+/home/ansible/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+---------
+
+________________________________
+BASIC UTILITIES-PRINTING, EMAIL|
+_______________________________|
+
+Basic utilities of Unix that are important in day-to-day life are Printing and E-mail
+
+PRINTING FILES
+
+The printing of files in Unix may be basically an auxiliary tool that gives user a good experience. Many versions of Unix include two powerful text formatters, 'nroff' and 'troff'.
+
+THE 'pr' COMMAND
+
+The 'pr' command does minor formatting of files on the terminal screen or for a printer. For ex, if you have a long list of names in a file, you can format it onscreen into two or more columns. The usage is as follows
+
+'pr <options> <filename>'
+
+-The 'pr' changes the format of the file only on the screen or on the printed copy. It does not modify the original file. Below are the options for 'pr' command
+
+-------------------------------Table---------------------------------
+Sr.No.	Option & Description
+1	-k   Produces k columns of output
+2       -d   Double-spaces the output (not on all pr versions)
+3       -h "header" Takes the next item as a report header
+4	-t Eliminates the printing of header and the top/bottom margins
+5	-l PAGE_LENGTH Sets the page length to PAGE_LENGTH (66) lines. The default number of lines of text is 56
+6       -o MARGIN  Offsets each line with MARGIN (zero) spaces
+7	-w PAGE_WIDTH  Sets the page width to PAGE_WIDTH (72) characters for multiple text-column output only
+-----------------------------end table-------------------------------
+
+
+Before using pr, here are the contents of a sample file named 'k'
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$cat k
+#!/bin/bash
+cd ~/anaconda3/bin
+source activate
+cd ~
+#!/bin/bash
+cd ~/anaconda3/bin
+source activate
+cd ~
+#!/bin/bash
+cd ~/anaconda3/bin
+source activate
+cd ~
+---------
+
+Let's use the 'pr' command to make a two-column report with the header 
+'distros'
+
+
+---------
+
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$pr -2 -h 'distros' 'linux_flavours' 
+
+
+2022-04-09 16:15                     distros                      Page 1
+
+
+Ubuntu				    Xubuntu
+Fedora				    Puppy Linux
+Linux Lite			    Peppermint OS
+Lubuntu				    OpenSuze
+Tiny core			    Amazon Linux
+Kubuntu				    Redhat Linux
+
+---------
+
+
+THE 'lp' and 'lpr' COMMANDS
+
+The command 'lp' or 'lpr' prints a file onto paper once ready with the formatting part using 'pr' command. Once ready for printing, it can be printed to any of the connnected printer as default set by the system administrator. If there is no printer then it shows as below
+
+'lp linux_flavours'
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~]$lp linux_flavours 
+lp: Error - No default destination.
+---------
+
+- The 'lp' command shows an 'ID' that you can use to 'cancel the printjob' or 'check it's status'
+
+***If you are using 'lp' command, you can use the '-nNum' option to print number of copies. Along with the command 'lpr', you can use 'Num' for the same. 
+
+***If there are multiple printers connected with the shared network, then you can choose a printer using '-dprinter' option along with 'lp' command and for the same purpose you can use '-Pprinter' option along with 'lpr'command. Here printer is the printer name.
+
+THE 'lpstat' and 'lpq' COMMANDS
+
+-The 'lpstat' command shows what's in the printer queue: request IDs, file sizes, when the jobs were sent for printing, and the status of the requests
+
+-Use 'lpstat -o' if you want to see all the output requests other than just your own as below
+---------
+$lpstat -o
+laserp-573  john  128865  Nov 7  11:27  on laserp
+laserp-574  grace  82744  Nov 7  11:28
+laserp-575  john   23347  Nov 7  11:35 
+
+---------
+
+The 'lpq' gives slightly different information than 'lpstat -o'
+
+---------
+$lpq
+laserp is ready and printing
+Rank   Owner      Job  Files                  Total Size
+active john       573  report.ps              128865 bytes
+1st    grace      574  ch03.ps ch04.ps        82744 bytes
+2nd    john       575  standard input         23347 bytes
+---------
+
+***Here the first line displays printer status. If the printer is disable or running out of paper, you may see the different messages on the first line
+
+THE 'cancel' and 'lprm' COMMANDS
+
+The 'cancel' conmand terminates a printing request form the 'lp' command. The 'lprm' command terminates all 'lpr request'. You can specify either the ID of the request
+
+---------
+$cancel laserp-575
+request "laserp-575" cancelled
+---------
+
+To cancel whatever request is currently printing, regardless of its ID, simply enter cancel and the printer name
+---------
+$cancel laserp
+request "laserp-573" cancelled
+$
+---------
+
+The 'lprm' command will cancel the active job if it belongs to you. Otherwise, you can give job numbers as arguments, or use a dash(-) to remvoe all your jobs
+---------
+$lprm 575
+dfA575diamond dequeued
+cfA575diamond dequeued
+
+---------
+
+-The 'lprm' command tells you the actual filenames removed from the printer queue
+
+SENDING E-mail
+
+You use the Unix mail command to send and receive mail. Here is the syntax to send an email.
+
+'mail <subject> <address> < bcc-address> <to-address>'
+
+--------------------------table------------------------------------
+Here are important options related to mail command −s
+
+Sr.No.	Option & Description
+1       -s   Specifies subject on the command line.
+2	-c   Sends carbon copies to the list of users. List should be a commaseparated list of names.
+3	-b   Sends blind carbon copies to list. List should be a commaseparated list of names.
+--------------------------------table end----------------------------
+
+Following is an example to send a test message to admin@yahoo.com.
+
+$mail -s "Test Message" admin@yahoo.com 
+You are then expected to type in your message, followed by "control-D" at the beginning of a line. To stop, simply type dot (.) as follows −
+
+Hi,
+
+This is a test
+.
+Cc: 
+You can send a complete file using a redirect < operator as follows −
+
+$mail -s "Report 05/06/07" admin@yahoo.com < demo.txt 
+To check incoming email at your Unix system, you simply type email as follows −
+
+$mail
+no email
+
+__________________
+PIPES AND FILTERS|
+_________________|
+
+Pipers and Filters are used to connect two commands together so that the output from one program becomes the input of the next program. Two or more commands connected in this way form a Pipe.
+
+Pipe (|) is a vertical bar on the command line between two commands
+
+When a program takes its input from another program, it performs some operation on that input and writes the result to the standard output, it is referred to as a 'filter'
+
+THE GREP COMMAND
+
+The grep command searches a file or files for lines that have a certain patters. The below is the syntax
+
+'grep <pattern> file(s)'
+
+-The name 'grep' comes from the 'ed'(a unix line editor) command g/re/p means "globally search for a regular expression and print all lines containing it"
+
+-A regular expression is either some plain text(a word ) and or regular expression used for patterm matching
+
+-The simplest use of 'grep' is to look for a pattern consistinf of a single word. It can be used in a 'pipe' so that filtered lines matching the word are sent to the 'STANDARD OUTPUT'. If you don't give 'grep' a 'filename' to read, it reads STANDARD INPUT'.
+
+---------
+[ansible@ansible-Lenovo-ideapad-320-15ISK:~/Documents/LINUX]$ls -l | grep 'Mar'
+-rw-rw-r-- 1 ansible ansible   58019 Mar 29 08:18 linux_all_topics
+-rw-rw-r-- 1 ansible ansible     318 Mar 20 19:51 l_questions_n_doubts
+drwxrwxr-x 2 ansible ansible    4096 Mar 21 14:22 shell_scripting_videos
+---------
+
+There are various options which you can use along with 'grep' command
+
+----------------------------------Table------------------------------
+Sr.No.	Option & Description
+1	-v    Prints all lines that do not match pattern.
+2	-n    Prints the matched line and its line number.
+3	-l    Prints only the names of files with matching lines (letter "l")
+4	-c    Prints only the count of matching lines.
+5	-i    Matches either upper or lowercase.
+
+----------------------------table end--------------------------------
+
+grep examples: 
+
+All the sample data is random and collected in a file 'Sample_files_to_practise/images_names'. Below are the examples to get the data as per the set pattern using 'grep' command
+
+
+To get the data like 'screenshot_52121', '3df3_carli_884848_FFJJ', 'JFJDKJ_cat_lin_3434_jdklf', these files have '[a-z]_[0-9]' in common. 
+'cat images_names | grep '[a-z]_[0-9] *'
+
+
+
+THE 'sort' COMMAND
+
+The 'sort' command arranges lines of text alphbetically or numberically.
+
+The below command 
+'sort food' sorts the text in alphabetically 
+---------
+infinity@infinityv:~/Documents/LINUX$ sort food
+
+Bagara rice
+chicken 65
+chicken biryani
+chicken tikka
+dahi wada
+Gulab jamun
+Icecream
+Lassi
+Milkshake
+Mutton biryani
+sambar
+---------
+The below command 
+'sort +3n food' sorts text in 
+The below command 
+'sort food' sorts the text in alphabetically 
+---------
+infinity@infinityv:~/Documents/LINUX$ sort +3 food
+
+Bagara rice
+chicken 65
+chicken biryani
+chicken tikka
+dahi wada
+Gulab jamun
+Icecream
+Lassi
+Milkshake
+Mutton biryani
+sambar
+---------
+
+
+
+The 'pg' and 'more' COMMANDS
+
+'pg' and 'more' commands are used to minimize the output of a command beyond the length of the screen and enables to see the next lines as per the direction.
+
+below is the output of a command that prints many lines that are beyond the length of the screen. 
+
+---------
+
+total 9128
+-rw-r--r-- 1 infinity infinity  174067 Apr 19  2019 60761_linux.pdf
+-rw-r--r-- 1 infinity infinity  456681 Apr 19  2019 book-linux.pdf
+drwxr-xr-x 2 infinity infinity    4096 Apr 17 23:14 day_assignments
+-rw-rw-r-- 1 infinity infinity     123 Apr 18 15:25 food
+drwxr-xr-x 3 infinity infinity    4096 Apr 17 23:14 LINUX
+-rw-r--r-- 1 infinity infinity   58019 Mar 29 08:18 linux_all_topics
+-rw-r--r-- 1 infinity infinity    4684 Apr  5 09:41 linux_information
+-rw-r--r-- 1 infinity infinity    1245 Apr 12 12:55 LINUX_LEARNT_FROM_MI
+STAKES
+-rw-r--r-- 1 infinity infinity     167 Apr 10 17:02 linux_projects
+-rw-r--r-- 1 infinity infinity   40512 Apr 14 12:33 linux_shell_scriptin
+g_course
+-rw-r--r-- 1 infinity infinity     318 Mar 20 19:51 l_questions_n_doubts
+-rw-r--r-- 1 infinity infinity 7407312 Apr 19  2019 MasteringLinuxShellS
+cripting_Ebrahim_Mallet.pdf
+-rw-r--r-- 1 infinity infinity     296 Apr 12 11:35 rename_UI_performing
+--More--
+
+---------
+in the above screen, we can find the '--More--' that lets the user to type 'enter' so that the other lines can be viewed on the screen. 
+
+_______________
+LINUX Processes|
+_______________|
+
+
+When you execute any program on linux, the system creates a special environment for that program. This environment contains everything needed for the system to run the program as if no other program were running on the system.
+
+Whenever you issue a command in linux, it creates a new process. When you tried out the 'ls' command to the list the directory, you started a process. A process is a simple instance of a running program.
+
+The operating system tracks processes through 	a five-digit ID number know as pid or process ID. Each process in the system has a unique PID.
+
+PIDs usually repeat because all the possible numbers are used up and the next pids are rolls and starts over. At any point of time, no two PIDs are existed similar because it is the PID with which the linux tracks each process.
+
+STARTING PROCESS
+
+When you start a process (run a command), there are two ways you can run it
+
+-Foreground processes
+-Background processes
+
+Foreground process: By default, every process which gets input from the keyboard and gives output on the screen is a foreground process.
+
+ex, ls command. Displaying output on the screen.
+
+Background process: A background process runs without being connected to your keyboard. If the background process requires any keyboard input, it waits.
+
+The advantage of Background process is that you can run other commands on the screen and no need to wait for the background process.
+
+---------
+
+infinity@infinityv:~/Documents/LINUX$ sudo apt update &
+[2] 5569
+---------
+
+
+The prompt will give output as above 
+
+
+
+LISTING RUNNING PROCESSES
+
+To list the running processes, below is the command used
+'ps'
+
+To list the long format for all the processes is to flag it with '-f'
+'ps -f'
+
+
+----------------------------Table-------------------------------------
+Here is the description of all the fields displayed by ps -f command −
+
+Sr.No.	Column & Description
+1	UID  User ID that this process belongs to (person running it)
+2	PID  Process ID
+3	PPID Parent process ID (the ID of the process that started it)
+4	C    CPU utilization of process
+5	STIME  Process start time
+6	TTY   Terminal type associated with the process
+7	TIME  CPU time taken by the process
+8	CMD  The command that started this process
+
+---------------------------Table end ---------------------------------'
+
+
+There are other options which can be used along with ps command −
+
+
+----------------------------------Table---------------------------------
+Sr.No.	Option & Description
+1	-a   Shows information about all users
+2	-x   Shows information about processes without terminals
+3	-u   Shows additional information like -f option
+4	-e   Displays extended information
+-----------------------------Table end --------------------------------
+
+STOPPING PROCESSES
+
+Ending a process can be doen in several different ways. To exit or interrupt a process on terminal, requires 'Ctrl+ C' keystroke. 
+
+***If a process is running in background, you should get the job ID using the 'ps' command. After that, you can use the 'kill' command to kill the process. Below is the process
+-Only 'ps' does not show all the processes. O
+'ps -A | grep "<process_name>" ' 
+
+
+In the above command, -A --all processes
+
+then you can execute another command 
+'kill <pid>'
+
+*** You can also kill a process with high priority '9' using the below command if the normal 'kill' command does not kill the process specified
+'kill -9 <process ID>' 
+
+PARENT AND CHILD PROCESSES
+
+Each unix has two ID numbers assigned to it. The process id(PID or pid) and the Parent process ID(PPID or ppid)
+-Each user process in the system has a parent process
+
+Most of the commands that you run have the shell as their parent. 'ps -f' displays 'ppid' as below
+
+
+---------
+infinity@infinityv:~/Documents/LINUX$ ps -f
+UID          PID    PPID  C STIME TTY          TIME CMD
+infinity    5132    1694  0 16:36 pts/0    00:00:00 bash
+infinity    5138    5132  0 16:37 pts/0    00:00:00 bash
+infinity    6812    5132  0 17:04 pts/0    00:00:00 ps -f
+---------
+
+ZOMBIE AND ORPHAN PROCESSESS
+
+Normally, when a child process is killed, the parent process is update via a SIGCHILD signal. Then the parent can do some other task or restart a new child process as needed. 
+-Sometimes, the parent process is killed before the child process is killed, then, the parent of all the processes 'init' process will become parent of all the processes(PPID)
+
+-These processes which are left by 'killed' parent processes are called as 'Orphan processes'.
+
+-When a process is killed, a 'ps' listing may still show the process with 'Z' state. This is 'Zombie' or 'defunct process'. The process is 'dead' and never being used. These processes are different from the orphaned processes as they have completed execution and still in the process entry table.
+
+DAEMON PROCESSES
+
+Daemons are system-related background processes that often run with the permissions of root and services requests from other processes.
+
+A daemon has no controlling terminal. It cannot open /dev/tty. If you do a 'ps -ef' and look at the tty ffield, all daemons will have a '?' for the 'tty'
+
+-A daemon is the process that runs in the background desparately waiting for something to work with. For ex, a printing daemon always wait for print commands.
+
+
+THE 'top' COMMAND
+
+The top command is a very useful tool for quickly showing processes sorted by various criteria.
+
+-It is an interface diagnostic tool that update frequently and shows information about physical and virtual memory, CPU usage, load averages, 	and your processes as shown below
+'top'
+---------
+infinity@infinityv:~/Documents/LINUX$ top
+
+top - 19:21:01 up 33 min,  1 user,  load average: 1.61, 0.85, 0.41
+Tasks: 237 total,   1 running, 236 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 34.8 us,  6.7 sy,  0.0 ni, 58.4 id,  0.0 wa,  0.0 hi,  0.2 si, 
+MiB Mem :   3708.6 total,   1451.7 free,   1145.8 used,   1111.1 buff/ca
+MiB Swap:   9766.0 total,   9766.0 free,      0.0 used.   2168.7 avail M
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ 
+   2108 infinity  20   0   24.5g 161004  95196 S  83.4   4.2   3:19.06 
+   1811 infinity  20   0   16.5g 139908  97696 S  39.5   3.7   1:56.59 
+    814 root      20   0  588884  85516  55552 S  13.3   2.3   1:20.59 
+   1289 infinity  20   0  692428  37496  27348 S   2.3   1.0   0:24.14 
+   1884 infinity  20   0  814196  50616  38300 S   2.3   1.3   0:17.52 
+     20 root      20   0       0      0      0 S   1.3   0.0   0:07.45 
+     54 root      20   0       0      0      0 I   1.3   0.0   0:06.32 
+   1282 infinity  20   0  162832   7636   6860 S   0.7   0.2   0:00.46 
+     13 root      20   0       0      0      0 I   0.3   0.0   0
+
+---------
+
+JOB ID VERSUS PROCESS ID
+
+Background and suspended processes are usually managed by 'job number'(job id). This number is different from the process ID because it is shorter.
+
+-A job consists of multiple processes running in series or at the same time, in parallel. Using the job ID is easier than tracking the individual processes.
+
+
+
+______________________________
+NETWORK COMMUNICATION UTILITY|
+_____________________________|
+
+ping
+netstat
+ifconfig
+nmap
+hostname -i
+
+
+When you work in a distributed environment, you need to communicate with the remote users and involves accessing remote Unix machines and it needs Network Communication Utilities. 
+
+THE 'ping' UTILITY
+
+The 'ping' command sends an echo request to a host available on the network. 
+
+-Using this utility, you can check if the remote host is responding well or not.
+
+-The ping commands is useful for the following 
+-Tracking and isolating hardware and software problems
+-Testing, measuring and managing networks
+
+Below is the usage
+
+'ping <hostname> or <ip-address>'
+
+ex: 'ping google.com' or 'ping 142.250.182.210'
+
+---------
+infinity@infinityv:~/Documents/LINUX$ ping google.com
+PING google.com (142.250.182.110) 56(84) bytes of data.
+64 bytes from maa05s21-in-f14.1e100.net (142.250.182.110): icmp_seq=1 ttl=119 time=59.4 ms
+64 bytes from maa05s21-in-f14.1e100.net (142.250.182.110): icmp_seq=2 ttl=119 time=64.5 ms
+64 bytes from maa05s21-in-f14.1e100.net (142.250.182.110): icmp_seq=3 ttl=119 time=62.7 ms
+---------
+
+If the host does not exist then the response is shown as similar as below
+
+---------
+infinity@infinityv:~/Documents/LINUX$ ping goggggle.com
+ping: goggggle.com: Name or service not known
+
+---------
+
+THE 'ftp' UTILITY
+
+The 'ftp' stands for 'File Transfer Protocol'. This utility helps you upload and download your file from one computer to another computer.
+
+The 'ftp' utility has its own set of Unix-like commands. These commands help you perform tasks such as
+-connect and login to a remote host
+-navigate directories
+-List directory contents
+-put and get files
+-Transfer files as ascii, ebcdic or binary
+
+SYNTAX:
+
+'ftp <hostname> or <ip-address>'
+
+ 
+The above command would prompt you for the logic id and the password. Once you are authenticated. You can access the home directory of the login accound and you would be able to perform various commands
+
+---------------------------------Table -------------------------------
+The following tables lists out a few important commands −
+
+Sr.No.	Command & Description
+1	put filename     Uploads filename from the local machine to the remote machine.
+2	get filename     Downloads filename from the remote machine to the local machine.
+3	mput file list   Uploads more than one file from the local machine to the remote machine.
+4	mget file list   Downloads more than one file from the remote machine to the local machine.
+5	prompt off       Turns the prompt off. By default, you will receive a prompt to upload or download files using mput or mget commands.
+6	prompt on        Turns the prompt on.
+7	dir              Lists all the files available in the current directory of the remote machine.
+8	cd dirname       Changes directory to dirname on the remote machine.
+9	lcd dirname      Changes directory to dirname on the local machine.
+10	quit             Helps logout from the current login.
+
+----------------------------Table end---------------------------------
+
+
+It should be noted that all the files would be downloaded or uploaded to or from the current directories. If you want to upload your fiels in a particular directory, you need to first change to the direcory and then upload the required files. 
+
+
+
+THE 'telnet' UTILITY
+
+
+There are times when we are required to connect to a remote Unix machine and work on that machine remotely. 'Telnet' is a utility that allows a user at one site to make a connection, login and then conduct work on a computer at another site.
+
+Once you login using Telnet, you can persofrm all the acivities on your remotely connected machine. The following is an example of Telnet session
+
+THE 'finger' UTILITY
+
+The 'finger' command displays information about users on a given host. The host can be either local or remote.
+
+
+
+__________________
+THE VI/VIM EDITOR|
+_________________|
+
+
+'Vi' stands for 'Visual Instrument. 'Vim' stands for 'Vim improved'. 
+-There are many ways to edit files in Unix. Editing files in terminal wayis more easy through 'Vim' text editor.
+
+'Vim' editor is more basic text editor using few resources and user-friendly than ed or ex.
+
+
+Starting the Vim editor:
+
+The following table lists out the basic commands to use the vi editor −
+
+
+-------------------------------Table----------------------------------
+Sr.No.	Command & Description
+
+1	vi filename    Creates a new file if it already does not exist, otherwise opens an existing file.
+2	vi -R filename  Opens an existing file in the read-only mode.
+3	view filename   Opens an existing file in the read-only mode.
+-----------------------------Table end---------------------------------
+
+Following is an example to create a new file testfile if it does not exist in the current working directory
+
+'vim <filename>'
+
+
+
+
+OPERATION MODES
+
+
+While working with the 'vim' editor, we usually come across the following modes
+
+
+Command mode :
+
+This mode performs administrative tasks such as 
+saving files, 
+executing the commands, 
+moving the cursor, 
+yanking(copying), 
+cutting and 
+pasting lines or words as well as 
+finding and replacing
+
+
+In the above mode, whatever you type is interpreted as command.
+
+
+Insert Mode : 
+
+This mode enables you to insert text into the file. 
+Everything that is typed is taken as input and saved to the file.
+
+
+Vim always starts in 'Command mode'. To enable text, press 'i' to be in 'Insert Mode'. To come out of 'Insert Mode', press 'esc' to toggle back into 'command mode'. 
+
+NOTE: If not sure about which mode you are in, press 'esc' twice'
+
+GETTING OUT OF VIM
+
+
+After any edits made on the file, to save changes we can use
+':wq' write and quit
+':q'  simply quit
+':q!' quit without saving
+':w'  simply save and be on the file
+':w filename2' we can also save another 'file' using this command
+
+
+Note: the easiest way when saving and quitting is 'ZZ', works same way as ':wq'.
+
+
+NAVIGATING THE FILE
+
+To move around within a file without affecting your text, you must be in a command mode. Below are commands to navigate directions
+
+------------------------------Table-----------------------------------
+Sr.No.	Command & Description
+1	k   Moves the cursor up one line
+2	j   Moves the cursor down one line
+3	h   Moves the cursor to the left one character position
+4	l   Moves the cursor to the right one character position
+------------------------------Table end--------------------------------
+
+-vim is case-sensitive. You need to pay attention to capitalization
+
+CONTROL COMMANDS
+
+
+EDITING COMMANDS
+
+These commands are more useful in the command mode of the file. 
+
+--------------------------------Table----------------------------------
+Sr.No.	Command & Description
+1	i     Inserts text before the current cursor location
+2	I     Inserts text at the beginning of the current line
+3	a     Inserts text after the current cursor location
+4	A     Inserts text at the end of the current line
+5	o     Creates a new line for text entry below cursor location
+6	O     Creates a new line for text entry above cursor location
+------------------------------Table end-------------------------------
+
+
+DELETING CHARACTERS
+
+------------------------------Table-------------------------------------
+Sr.No.	Command & Description
+1	x    Deletes the character under the cursor location
+2	X    Deletes the character before the cursor location
+3	dw   Deletes from the current cursor location to the next word
+4	d^   Deletes from the current cursor posi. to beginning of line
+5	d$   Deletes from the current cursor position to end of line
+6	D    Deletes from the cursor position to end of the current line
+7	dd   Deletes the line the cursor is on
+
+-----------------------------------Table end--------------------------
+
+CHANGE COMMANDS
+
+--------------------------------Table---------------------------------
+Sr.No.	Command & Description
+1	cc    Removes the contents of line, leaving you in insert mode.
+2	cw    Changes the word the cursor is on from cursor to lowercase w end of word.
+3	r    Replaces the character under the cursor. vi returns to the command mode after the replacement is entered.
+4	R    Overwrites multiple characters beginning with the character currently under the cursor. You must use Esc to stop the overwriting.
+5	s    Replaces the current character with the character you type. Afterward, you are left in the insert mode.
+6	S    Deletes the line the cursor is on and replaces it with the new text. After the new text is entered, vi remains in the insert mode.
+
+--------------------------------Table end-----------------------------
+
+COPY AND PASTE COMMANDS
+
+
+------------------------------Table------------------------------------
+Sr.No.	Command & Description
+1	yy   Copies the current line.
+2	yw   Copies the current word from the character the lowercase w cursor is on, until the end of the word.
+3	p    Puts the copied text after the cursor.
+4	P    Puts the yanked text before the cursor.
+
+------------------------------Table end--------------------------------
+
+
+
+ADVANCED COMMANDS
+
+
+
+
+------------------------------Table------------------------------------
+Sr.No.	Character &Description
+1	^    Searches at the beginning of the line (Use at the beginning of a search expression).
+2	.    Matches a single character.
+3	*    Matches zero or more of the previous character.
+4	$    End of the line (Use at the end of the search expression).
+5	[    Starts a set of matching or non-matching expressions.
+6	<    This is put in an expression escaped with the backslash to find the ending or the beginning of a word.
+7	>    This helps see the '<' character description above.
+
+------------------------------Table end--------------------------------
+
+
+
+SET COMMANDS
+
+------------------------------Table------------------------------------
+Sr.No.	Command & Description
+1	:set ic   Ignores the case when searching
+2	:set ai   Sets autoindent
+3	:set noai   Unsets autoindent
+4	:set nu   Displays lines with line numbers on the left side
+5	:set sw   Sets the width of a software tabstop. For example, you would set a shift width of 4 with this command — :set sw = 4
+6	:set ws   If wrapscan is set, and the word is not found at the bottom of the file, it will try searching for it at the beginning
+7	:set wm   If this option has a value greater than zero, the editor will automatically "word wrap". For example, to set the wrap margin to two characters, you would type this: :set wm = 2
+8	:set ro   Changes file type to "read only"
+9	:set term   Prints terminal type
+10	:set bf    Discards control characters from input
+
+------------------------------Table end--------------------------------
+
+
+
+
+
+RUNNING COMMANDS
+
+
+The 'Vim' has the capability to run commands from with in the editor. To run a command , you only need to go to the command mode and type ':!' command. The command works alongside the vim editor.
+
+---------
+60761_linux.pdf
+book-linux.pdf
+day_assignments
+food
+LINUX
+linux_all_topics
+linux_information
+LINUX_LEARNT_FROM_MISTAKES
+linux_projects
+linux_shell_scripting_course
+l_questions_n_doubts
+MasteringLinuxShellScripting_Ebrahim_Mallet.pdf
+rename_UI_performing_options
+Sample_files_to_practise
+shell_scripting_videos
+unix_tutorial.pdf
+VIM
+webshots
+
+Press ENTER or type command to continue
+
+---------
+
+
+REPLACING TEXT
+
+
+The substitution command (:s/) enables you to quickly replace words or groups of words within your files. Following is the syntax
+
+SYNTAX:
+
+':s/search/replace/g'
+
+'s' substitute
+'g' globally
+'search' the words that has to be replaced
+'replace' the words that replaces the searched words
+
+NOTE: you must be careful with the commands
+
+-YOU CAN UNDO (using 'u') OR REDO(using ctrl+R) the edit in this substition operation.
+
+
+
+
+------------------------------SHELL PROGRAMMING------------------------
+
+A shell script is a computer program designed to be run by Linux shell which could be one of the following : The Bourne shell, The C shell, The Korn shell, The GNU Bourne-Again shell
+
+A shell is a command line interpreter. Typical operations of shell scripts include file manipulation, program execution and printing text.
+
+EXTENDED SHELL SCRIPTS
+
+Shell scripts have several required constructs like variables, control structures and so forth. 
+
+A simple ex, for a shell script written in a file is as follows
+
+test or test.sh
+---------
+
+echo 'What is your name?'
+read PERSON
+echo 'Hello, $PERSON'
+
+---------
+$./test
+What is your name?
+Kittu
+Hello, Kittu
+$
+---------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Local variables : A local variable is a variable that is present with in the current instance of the shell. It is not available to programs
+
