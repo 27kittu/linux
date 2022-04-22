@@ -1550,14 +1550,141 @@ $
 ---------
 
 
+_________________
+WHAT IS A SHELL?|
+________________|
+
+
+A shell is an interface to communicate with the Unix system. A shell takes input from the user and performs execution as the requirement and shows the final output after performing the task.
+
+A shell is an environment which can run a user's commands, programs and shell scripts. There are different flavours of shells with their own set of recognized function and commands
+
+
+SHELL PROMPT
+
+The prompt, $, which is called the 'command prompt' is issed by the shell while it is displayed you can type commands.
+
+Following is a simple set of command, date
+'date'
+---------
+infinity@infinityv:~/Downloads/linux_learn$ date
+Thursday 21 April 2022 05:41:12 PM IST
+infinity@infinityv:~/Downloads/linux_learn$ 
+---------
+
+SHELL TYPES
+
+There are two major shell types
+
+Bourne shell : If you are using this type of shell, then '$' is the default prompt
+C shell  : If you are using this C-type shell, then '%' is the default prompt.
+
+The bourne shell has following catergories
+-Bourne shell(sh)
+-Korn shell(ksh)
+-Bourne Again shell(bash)
+-POSIX shell(sh)
+
+The different C-type shells are
+-C shell(csh)
+-TENEX/TOPS C shell(tcsh)
+
+Bourne shell was the first shell to appear on the Unix systems. Thus it is referred as 'the shell'
+
+SHELL SCRIPTS
+
+The basic concept of  ashell script is a list of commands, which are listed in the order of execution. A good shell script will have comments, preceded by '#' sign, describing  the steps.
+
+
+The scripts involves massive amounts of data. files to reasd and store data and variables to read and store data and the script may include functions 
+
+***Shell scripts and functions are both interpreted. This means they are not compiled.
+
+EXAMPLE SCRIPT
+
+In the below script test.sh, has or not has '.sh' extension is okay. Before adding the code to the system, it is to alert the interpreter that a shell script is being started. This is done using 'shebang' construct as below
+
+'#!/bin/sh'
+
+The above line in the starting of the shell will tell that the file is going to be executed by Bourne shell. It is called 'shebang' as '#' refers to 'hash' and '!' is called a bang.
+
+#!/bin/bash
+pwd
+ls
 
 
 
 
+SHELL COMMENTS
+
+Shell comments are indicated with '#' as below
+
+
+#!/bin/bash
+
+# Author : Kittu
+# Copyright (c) Kittu
+# script follows here
+pwd 
+ls
 
 
 
+After saving the above code, make the script executable by
 
+'chmod +X test.sh'
+
+The shell scripts are then run prefixing './' to run in terminal
+'./test.sh'
+
+Upon the execution of the above shell script, we get
+---------
+infinity@infinityv:~/Downloads/linux_learn$ ./test.sh
+/home/infinity/Downloads/linux_learn
+linux_shell_scripting_course
+
+
+
+To execute the program in the current directory, use ./program_name
+
+Below is a table to represent the notations for directories
+
+-------------------------------Table----------------------------------
+  symbol              Desription
+    .      Represents the present directory
+   ..      Represents the previous directory
+    -      To toggle between the present and previous directories
+--------------------------------Table end-----------------------------
+
+EXTENDED SHELL SCRIPTS
+
+These scripts are nothing but a very big programs that have several other shell constructs with complex logics. After all, shell is a real programming language.
+
+
+USING SHELL VARIABLES
+
+The shell variables have a particular way or conventions of representing in the scripts using case(upper and lower), digits, symbols. A variable is nothing more than a pointer to the actual data or value assigned.
+The shell enables you to create, assign and delete variables.
+
+VARIABLE NAMES
+
+The name of a variable can contain only letters (a-z, A-Z), numbers(0-9) or the Underscore character(_)
+
+By convention Unix shell variables have their names in UPPERCASE
+
+_KALI
+LINUX_VARIABLE
+VAR_A
+VAR_3
+
+Following are examples of invalid variable names
+
+1_VAR
+-vARIABLE
+VAR-VAE2
+VAR_A!
+
+ 
 
 
 
