@@ -1522,7 +1522,14 @@ NOTE: you must be careful with the commands
 
 
 
-------------------------------SHELL PROGRAMMING------------------------
++++++++++++++++++++++++++++SHELL PROGRAMMING+++++++++++++++++++++++++
+
+
+______________
+SHELL SCRIPTS|
+_____________|
+
+
 
 A shell script is a computer program designed to be run by Linux shell which could be one of the following : The Bourne shell, The C shell, The Korn shell, The GNU Bourne-Again shell
 
@@ -1685,18 +1692,3611 @@ VAR-VAE2
 VAR_A!
 
  
+***The meaning that other characters !, * or - is not used is these characters have a special meaning for the shell.
+
+
+DEFINING VARIABLES
+
+Variables which can hold a single value are called as scalar variables
+variables are defined as 
+
+variable_name=variable_value
+
+ex: A=27
 
 
 
+ACCESSING VALUES
+
+To access the value stored in a variable, prefix the variable with '$'. The value of 'A' is accessed by the script and printed on STDOUT 
+'$A'
+---------
+27
+---------
+
+
+READ-ONLY VARIABLES
+
+Shell provides a way to mark variables as read-only by using the read-only command. After a variable is marked read-only, its value cannot be changed. The following variable generates error while changing the value of the variable.
+
+---------
+infinity@infinityv:~/Downloads$ A=27
+infinity@infinityv:~/Downloads$ readonly A
+infinity@infinityv:~/Downloads$ A=25
+bash: A: readonly variable
+infinity@infinityv:~/Downloads$ 
+---------
+
+
+UNSETTING VARIABLES
+
+
+Unsetting or deleting a variable directs the shell to remove the variable from the list of variables that it tracks.
+Once the variable is uset, you cannot access the stored value in the variable.
+
+
+Syntax:
+
+unset variable_name
+
+---------
+infinity@infinityv:~/Downloads$ NAME='Kittu'
+infinity@infinityv:~/Downloads$ echo $NAME
+Kittu
+infinity@infinityv:~/Downloads$ unset NAME
+infinity@infinityv:~/Downloads$ echo $NAME
+
+infinity@infinityv:~/Downloads$
+---------
+
+**The above example does not print anything. You cannot 'unset' the variable that was declared or marked 'readonly'
 
 
 
+VARIABLE TYPES
 
-
-
-
-
+When a shell is running, three main types of variables are present
 
 
 Local variables : A local variable is a variable that is present with in the current instance of the shell. It is not available to programs
+that are started by the shell. They are set at the command prompt.
+
+Environmental variables : An environmental variables are defined by the programs needed for their processing. An environmental variables are available to child processes of the shell. Some programs need environment variables in order to function properly.
+
+Shell variables : Shell variables are hybrid variables which can be Environment variables and local variables as well. A shell variable is a special variable that is set by the shell and is required by the shell in order to function correctly.
+
+
+SPECIAL VARIABLES
+
+
+These variables are reserved for the specific functions. For ex, '$' character represents the process ID or PID of the current shell.
+
+echo $$
+
+---------
+infinity@infinityv:~/Downloads$ echo $$
+1770
+infinity@infinityv:~/Downloads
+---------
+
+The following is the table to show the special variables you use in shell scripts
+
+
+-------------------------------Table---------------------------------
+
+Sr.No.	Variable & Description
+1	$0   The filename of the current script.
+2	$n   These variables correspond to the arguments with which a script was invoked. Here n is a positive decimal number corresponding to the position of an argument (the first argument is $1, the second argument is $2, and so on).
+3	$#   The number of arguments supplied to a script.
+4	$*   All the arguments are double quoted. If a script receives two arguments, $* is equivalent to $1 $2.
+5	$@   All the arguments are individually double quoted. If a script receives two arguments, $@ is equivalent to $1 $2.
+6	$?   The exit status of the last command executed.
+7	$$   The process number of the current shell. For shell scripts, this is the process ID under which they are executing.
+8	$!   The process number of the last background command.
+
+----------------------------------Table end--------------------------
+
+
+COMMAND-LINE ARGUMENTS
+
+	
+The command-line arguments $1, $2, $3,....$9
+
+QUOTATION MARKS USED IN UNIX SHELL SCRIPTS
+
+Single quotes:
+
+Enclosing characters in single quotation marks (‘) holds onto the literal value of each character within the quotes.  In simpler words, the shell will interpret the enclosed text within single quotes literally and will not interpolate anything including variables, backticks, certain \ escapes, etc. No character in the single quote has special meaning. This is convenient when you do not want to use the escape characters to change the way the bash interprets the input string.
+
+Double quotes:
+
+Double quotes are similar to single quotes except that it allows the shell to interpret dollar sign ($), backtick(`), backslash(\) and exclamation mark(!). The characters have special meaning when used with double quotes, and before display, they are evaluated. A double quote may be used within double quotes by preceding it with a backslash.
+
+
+The usage for the above variables are shown below script
+
+---------
+echo "File name : $0"
+echo "first parameter : $1"
+echo "second parameter : $2"
+echo "Quoted values : $@"
+echo "Quoted values : $*"
+echo "Total number of variables : $#"
+---------
+
+below is the result for the above script as below
+
+---------
+./test kittu c
+File name : ./test
+first parameter : kittu
+second parameter : c
+Quoted values : kittu c
+Quoted values : kittu c
+Total number of variables : 2
+
+---------
+
+
+SPECIAL PARAMETERS $* and $@
+
+There are special parameters that allow accessing all the command line arguments at once. $* and $@ both will act the same unless they are enclosed in double quotes "".
+
+Both the parameters specify the command line arguments. 
+'$*' takes the entire list as one argument with spaces b/w 
+'$@' takes the entire list and shows in separate arguments.
+
+
+We can wriet the shell scrpt to process an unknown number of arguments with either the '$*' or '$@' as below
+
+---------
+#!/bin/bash
+
+for token in $@
+do
+echo $token
+done
+
+
+
+infinity@infinityv:~/Downloads$ vim trial2
+infinity@infinityv:~/Downloads$ ./trial2 kittu 20 years old
+kittu
+20
+years
+old
+---------
+
+
+EXIT STATUS
+
+
+
+The '$?' variable represent the exit status of the previous command
+
+Exit status is a numerical value returned by every command upon its execution. Below are the exit statuses returned by the commands 
+
+'0' if the command previously executed is 'Successful'
+'1' if the command previously executed is 'Unsuccessful'
+---------
+
+infinity@infinityv:~/Downloads$ vim trial2
+infinity@infinityv:~/Downloads$ ./trial2 kittu 20 years old
+kittu
+20
+years
+old
+infinity@infinityv:~/Downloads$ 
+infinity@infinityv:~/Downloads$ vim trial2
+infinity@infinityv:~/Downloads$ vim trial3
+infinity@infinityv:~/Downloads$ chmod +x trial3
+infinity@infinityv:~/Downloads$ ./trial3 kittu 1
+Filename : ./trial3
+your name : kittu
+Second argument 1
+arguments given kittu 1
+infinity@infinityv:~/Downloads$ $?
+0: command not found
+infinity@infinityv:~/Downloads$ echo $?
+127
+infinity@infinityv:~/Downloads$ echo "$?"
+0
+infinity@infinityv:~/Downloads$ echo echo $?
+echo 0
+infinity@infinityv:~/Downloads$ echo $?
+0
+infinity@infinityv:~/Downloads$ echo $?
+0
+infinity@infinityv:~/Downloads$ a
+a: command not found
+infinity@infinityv:~/Downloads$ $?
+127: command not found
+infinity@infinityv:~/Downloads$ $?
+127: command not found
+infinity@infinityv:~/Downloads$ $?
+127: command not found
+infinity@infinityv:~/Downloads$ echo $?
+127
+infinity@infinityv:~/Downloads$ echo "$?"
+0
+infinity@infinityv:~/Downloads$
+
+---------
+
+__________________
+USING SHELL ARRAYS|
+__________________|
+
+
+
+
+
+A shell variable is capable enough to hold a single value. These variables are 'Scalar variables'.
+
+Shell supports a different type of variable which can hold 'n' number of items at a time called 'Array variables'
+
+The array variables can hold multiple items. Arrays provide a method of grouping for a set of variables.
+
+
+DEFINING ARRAYS
+
+
+The difference between an array variable and  a scalar variable is that 'all the scalar variables' can be grouped into  a 'single array variable' separated by spaces as below. To form an 'array variable'
+
+array[index]=value
+
+ex: ar[0]=32
+ar[1]=22
+ar[2]=33
+
+here array_name is the name of the array, 'index' is the index of the item in array and the value is the value you want to set to the array item.
+
+ar[3]='55'
+
+If you are using 'bash', then setting array initialization is 
+
+<array_name>=(value1 value2 value3 .....valuen)
+
+
+ACCESSING ARRAY VALUES
+
+
+After you have set any arraya values, you access it as follows
+
+${array_name[index]}
+
+
+Here array_name is the name of the array and index is the 'index of the array to be accessed'. 
+
+
+ar[0]=33
+echo "First item : ${ar[0]}"
+
+
+The above example will generate below code
+
+---------
+infinity@infinityv:~/Downloads$ ar[0]=22
+infinity@infinityv:~/Downloads$ echo "The first index: ${ar[0]}"
+The first index: 22
+---------
+
+
+
+To access all the items in the array in one of the following ways
+
+${array_name[*]}
+
+or you can access using 
+
+${array_name[@]}
+
+---------
+infinity@infinityv:~/Downloads$ ar[0]=34
+infinity@infinityv:~/Downloads$ ar[1]=33
+infinity@infinityv:~/Downloads$ ar[2]=35
+infinity@infinityv:~/Downloads$ echo "${ar[*]}"
+34 33 35
+
+---------
+
+
+______________________
+SHELL BASIC OPERATORS|
+_____________________|
+
+
+
+There are various operators supported by each shell. Below are the operators as shown
+
+-Arithmetic operators
+-Relational operators
+-String operators
+-File Test operators
+
+*** Bourne Shell did not originally have any mechanism to perform simple arithmetic operations, but it uses external programs, either 'awk' or 'expr'
+
+
+The following is the example to show the addition of two numbers
+
+val=`expr 3+4`-------(1)
+echo "the value of the expression is : $val"
+
+---------
+infinity@infinityv:~/Downloads$ val=`expr 3 + 4`
+infinity@infinityv:~/Downloads$ echo "$val"
+7
+infinity@infinityv:~/Downloads$
+---------
+
+The above code in the line (1) contains backtick expression (`) and not any quotes as the expression needs the backtick
+
+
+There must be spaces between operators and expressions. For example, 3 + 4 is not correct, it should be written as 3 + 4. 
+The complete expression should be enclosed in backtick(`)
+
+
+ARITHMETIC OPERATORS
+
+The following arithmetic opertors are supported by Bourne shell 
+
+---------------------------------Table-------------------------------
+Operator	Description	Example
++ (Addition)	Adds values      expr $a + $b` will give 30
+- (Subtraction)	Subtracts 	`expr $a - $b` will give -10
+* (Multiplication)Multiplies 	`expr $a \* $b` will give 200
+/ (Division)	Divides 	`expr $b / $a` will give 2
+% (Modulus)	Divides  returns remainder	`expr $b % $a` will give 0
+= (Assignment)	Assigns right operand in left operand	a = $b would assign value of b into a
+== (Equality)	Compares two numbers, if both are same then returns true.	[ $a == $b ] would return false.
+!= (Not Equality)	Compares two numbers, if both are different then returns true.	[ $a != $b ] would return true.
+----------------------------Table end--------------------------------
+
+
+
+it is avery important to understand that all the conditional expressions should be inside square braces with spaces around them, for example [ $a == $b ] is correst whereas , [$a==$b] is incorrect.
+
+
+RELATIONAL OPERATORS
+
+Bourne Shell supports the following operators that are specific to numeric values. These values don't work for string values unless their value is 'numeric' as below
+
+Assume variable a holds 10 and variable b holds 20 then it works
+
+---------
+infinity@infinityv:~/Documents/LINUX$ a=5
+infinity@infinityv:~/Documents/LINUX$ b=3
+infinity@infinityv:~/Documents/LINUX$ if [ $a -lt $b ]; then echo 'a is greated than b'; fi
+infinity@infinityv:~/Documents/LINUX$ if [ $a -gt $b ]; then echo 'a is greated than b'; fi
+a is greated than b
+--------- 
+
+-----------------------------------Table-----------------------------
+Operator	Description	Example
+-eq	Checks if the value of two operands are equal or not; if yes, then the condition becomes true.	[ $a -eq $b ] is not true.
+                           -------------------
+-ne	Checks if the value of two operands are equal or not; if values are not equal, then the condition becomes true.	[ $a -ne $b ] is true.
+                           -------------------
+-gt	Checks if the value of left operand is greater than the value of right operand; if yes, then the condition becomes true.	[ $a -gt $b ] is not true.
+                           -------------------
+-lt	Checks if the value of left operand is less than the value of right operand; if yes, then the condition becomes true.	[ $a -lt $b ] is true.
+                           -------------------
+-ge	Checks if the value of left operand is greater than or equal to the value of right operand; if yes, then the condition becomes true.	[ $a -ge $b ] is not true.
+                           -------------------
+-le	Checks if the value of left operand is less than or equal to the value of right operand; if yes, then the condition becomes true.	[ $a -le $b ] is true.
+
+------------------------------------Table end-------------------------
+
+***It is very important to understand that all the conditional expressions should be placed inside square braces with spaces around them. For example, [ $a <= $b ] is correct whereas, [$a <= $b] is incorrect.
+
+
+
+
+BOOLEAN OPERATORS
+
+
+The Boolean operators are supported by Bourne shell
+
+The Boolean operators are 'OR'(-0) , 'AND'(-a) and negative(!)
+
+
+------------------------------------Table-----------------------------
+
+Operator	Description	Example
+!	This is logical negation. This inverts	[ ! false ] is true.
+-o	This is logical OR. 	[ $a -lt 20 -o $b -gt 100 ] is true.
+-a	This is logical AND.	[ $a -lt 20 -a $b -gt 100 ] is false.
+
+--------------------------------Table end-----------------------------
+
+
+STRING OPERATORS
+
+
+The following string operators are supported by Bourne Shell.
+
+Assume variable a holds "abc" and variable b holds "efg" then −
+
+
+-----------------------------Table------------------------------------
+
+Operator	Description	Example
+=	Checks if the value of two operands are equal or not; if yes, then the condition becomes true.	[ $a = $b ] is not true.
+                         ---------------------
+!=	Checks if the value of two operands are equal or not; if values are not equal then the condition becomes true.	[ $a != $b ] is true.
+                         ---------------------
+-z	Checks if the given string operand size is zero; if it is zero length, then it returns true.	[ -z $a ] is not true.
+                         ---------------------
+-n	Checks if the given string operand size is non-zero; if it is nonzero length, then it returns true.	[ -n $a ] is not false.
+                         ---------------------
+str	Checks if str is not the empty string; if it is empty, then it returns false.	[ $a ] is not false.
+
+--------------------------------Table end-----------------------------
+
+File Test Operators
+We have a few operators that can be used to test various properties associated with a Unix file.
+
+Assume a variable file holds an existing file name "test" the size of which is 100 bytes and has read, write and execute permission on −
+
+
+---------------------------------Table-------------------------------
+Operator	Description	Example
+-b file	Checks if file is a block special file; if yes, then the condition becomes true.	[ -b $file ] is false.
+                   -------------------------
+-c file	Checks if file is a character special file; if yes, then the condition becomes true.	[ -c $file ] is false.
+                   -------------------------
+-d file	Checks if file is a directory; if yes, then the condition becomes true.	[ -d $file ] is not true.
+                   -------------------------
+-f file	Checks if file is an ordinary file as opposed to a directory or special file; if yes, then the condition becomes true.	[ -f $file ] is true.
+                   -------------------------
+-g file	Checks if file has its set group ID (SGID) bit set; if yes, then the condition becomes true.	[ -g $file ] is false.
+                   -------------------------
+-k file	Checks if file has its sticky bit set; if yes, then the condition becomes true.	[ -k $file ] is false.
+                   -------------------------
+-p file	Checks if file is a named pipe; if yes, then the condition becomes true.	[ -p $file ] is false.
+                   -------------------------
+-t file	Checks if file descriptor is open and associated with a terminal; if yes, then the condition becomes true.	[ -t $file ] is false.
+                   -------------------------
+-u file	Checks if file has its Set User ID (SUID) bit set; if yes, then the condition becomes true.	[ -u $file ] is false.
+                   -------------------------
+-r file	Checks if file is readable; if yes, then the condition becomes true.	[ -r $file ] is true.
+                   -------------------------
+-w file	Checks if file is writable; if yes, then the condition becomes true.	[ -w $file ] is true.
+                   -------------------------
+-x file	Checks if file is executable; if yes, then the condition becomes true.	[ -x $file ] is true.
+                   -------------------------
+-s file	Checks if file has size greater than 0; if yes, then condition becomes true.	[ -s $file ] is true.
+                   -------------------------
+-e file	Checks if file exists; is true even if file is a directory but exists.
+
+------------------------------------Table end------------------------
+
+
+
+______________________
+SHELL DECISION MAKING |
+______________________|
+
+
+Decision making in linux shell scripts are adopted by conditional statements where you have to adopt one path out of multiple. So, you can take right decisions as per your requirement and perform righ actions.
+
+There are two types of shell loops
+
+-if..else statement
+-case..esac statement
+
+if..else statement:
+
+furthermore, if..else statement has 3 other types
+-if..fi statement
+
+Syntax
+
+if [ expression ] 
+then 
+   Statement(s) to be executed if expression is true 
+fi
+
+
+
+-if..else..fi statement
+
+
+Syntax
+
+
+if [ expression ]
+then
+   Statement(s) to be executed if expression is true
+else
+   Statement(s) to be executed if expression is not true
+fi
+
+
+
+-if..elif..else..fi statement
+
+
+
+Syntax
+
+
+if [ expression 1 ]
+then
+   Statement(s) to be executed if expression 1 is true
+elif [ expression 2 ]
+then
+   Statement(s) to be executed if expression 2 is true
+elif [ expression 3 ]
+then
+   Statement(s) to be executed if expression 3 is true
+else
+   Statement(s) to be executed if no expression is true
+fi
+
+
+Most of the 'if' statements check relations using relational operators discussed in the previous sessions
+
+
+case..esac statement:
+
+
+Syntax
+
+
+case word in
+   pattern1)
+      Statement(s) to be executed if pattern1 matches
+      ;;
+   pattern2)
+      Statement(s) to be executed if pattern2 matches
+      ;;
+   pattern3)
+      Statement(s) to be executed if pattern3 matches
+      ;;
+   *)
+     Default condition to be executed
+     ;;
+esac
+
+
+The case...esac statement in the Unix shell is very similar to the switch...case statement we have in other programming languages like C or C++ and PERL, etc.
+
+
+_________________
+SHELL LOOP TYPES|
+________________|
+
+
+Shell loops are important constructs that are essential to continuously repeat some routine actions. Below are the 4 types of shell loops
+
+-While loop
+-for loop
+-until loop
+-select loop
+
+The above loops are completely based on the situation as 'while' loop will be executed till the condition is true. 
+The  'until' loop executes until a given condition becomes 'true'
+
+NESTING LOOPS
+
+All the loops support nesting concept which means one loop can be put inside the similar one or different loops. Nesting can go up to unlimited until the requirement is satisfied.
+
+Nesting while loops:
+
+
+Syntax:
+
+while command1 ; # this is loop1, the outer loop
+do
+   Statement(s) to be executed if command1 is true
+
+   while command2 ; # this is loop2, the inner loop
+   do
+      Statement(s) to be executed if command2 is true
+   done
+
+   Statement(s) to be executed if command1 is true
+done
+
+
+
+The 'while' loop:
+
+
+
+
+The 'while loop' enables you to execute a set of commands repeatedly until the given condition becomes 'false'
+This loop is used to manipulate a value repeatedly
+
+Syntax
+
+while command
+do
+   Statement(s) to be executed if command is true
+done
+
+
+
+If the command is not met then the execution skips the loop after 'done' statement.
+
+
+The 'for' loop:
+
+
+The 'for' loop operates on lists of items. It repeats the commands for every item in the list. The loop traverses through the list of items to use with the commands inside the loop. when the list items are done the loop is closed. 
+
+
+Syntax:
+
+
+
+
+for var in word1 word2 ... wordN
+do
+   Statement(s) to be executed for every word.
+done
+
+
+here 'var' is the name of the variable and 'word1' and 'wordN' are the sequence of characters separated by spaces. 
+
+
+The 'until' loop:
+
+
+The while loop is perfect for a situation where you need to execute a set of commands while some condition is true. But for a 'until' loop is for the execution a set of commands 'until' a condition is 'true'.
+
+
+Syntax
+
+
+until command
+do
+   Statement(s) to be executed until command is true
+done
+
+
+
+If the command becomes 'true', then the execution enters the loop. Otherwise, the execution jumps next to done. 
+
+
+The 'select' loop:
+
+
+
+The select loop provides an easy way to create a numbered menu from whic users can select options. It is useful when you need to ask to choose one or more items from a list of choices. 
+
+
+Syntax:
+
+
+select var in word1 word2 ... wordN
+do
+   Statement(s) to be executed for every word.
+done
+
+
+
+__________________
+SHELL LOOP CONTROL|
+__________________|
+
+
+
+The shell loop controls are used to stop a loop or skp iterations of theloop based on particular situation. below are the loop control statements that are used 
+
+-The 'break' statement
+-The 'continue' statement
+
+The 'break' statement :
+
+
+The 'break' statement is sued to terminate the execution of the entire loop after completing the execution of all the lines of code up to 'break' statement. 
+
+
+The following 'break' statement is used to come out of the loop
+
+'break'
+
+The 'break' command can also be used to exit from a nested loop using the format 
+
+'break n'
+
+here 'n' specifies the nth enclosing loop to the exit from 
+
+
+The 'continue' statement
+
+
+The 'continue' statement is similar to the 'break' command, exept it causes the current iteration of the loop to exit, rather than the entire loop. 
+
+'continue'
+
+
+
+Like with the 'break' statement, an integer argument can be given to the 'continue' command to skip commands from the nested loops
+
+'continue n'
+
+here 'n' specifies the nthe enclosing loop to continue from 
+
+
+___________________
+SHELL SUBSTITUTIONS|
+___________________|
+
+
+
+SUBSTITUTION:
+
+
+The shell performs substitution when it encounters an expression that contains one or more special characters.
+
+
+ex.
+
+here , the printing value of the variable is substituted by its value. 
+------------------------
+a=10
+echo -e "value of a is $a \n"
+
+value of a is 10
+_                    (The cursor lies in this line)
+------------------------
+
+
+if the flag '-e' is not used
+
+
+value of a is 10\n      (The cursor lies in this line)
+
+The following 'escape sequences' which can be used in 'echo' commands
+
+------------------------------Table----------------------------------
+Sr.No.	Escape & Description
+1	\\    backslash
+2	\a    alert (BEL)
+3	\b    backspace
+4	\c    suppress trailing newline
+5	\f    form feed
+6	\n    new line
+7	\r    carriage return
+8	\t    horizontal tab
+9	\v    vertical tab
+-----------------------------Table end-------------------------------
+
+
+
+You can use the '-E' option to disable the interpretation of the 'backslash' escapes(default). 
+You can use the '-n' option to disable the interpretation of a new line
+
+
+
+
+COMMAND SUBSTITUTION
+
+
+Command substitution is the mechanism by which the shell performs a given set of commands and then substitutes their output in the place of the commands
+
+Syntax:
+
+
+`command`
+
+
+When performing the command substitution make sure that you use the 'backquote' or 'backtick' not the single quote character.
+
+
+ex.
+------------------------
+#!/bin/sh
+
+DATE=`date`
+echo "Date is $DATE"
+
+USERS=`who | wc -l`
+echo "Logged in user are $USERS"
+
+UP=`date ; uptime`
+echo "Uptime is $UP"
+Upon execution, you will receive the following result −
+
+Date is Thu Jul  2 03:59:57 MST 2009
+Logged in user are 1
+Uptime is Thu Jul  2 03:59:57 MST 2009
+03:59:57 up 20 days, 14:03,  1 user,  load avg: 0.13, 0.07, 0.15
+
+------------------------
+
+
+
+VARIABLE SUBSTITUTION :
+
+
+Variable substitution enables the shell programmer to manipulate the value of a variable based on its state.
+
+
+-----------------------------Table-----------------------------------
+
+Sr.No.	Form & Description
+1	${var}    Substitute the value of var.
+2	${var:-word}    If var is null or unset, word is substituted for var. The value of var does not change.
+3	${var:=word}    If var is null or unset, var is set to the value of word.
+4	${var:?message}    If var is null or unset, message is printed to standard error. This checks that variables are set correctly.
+5	${var:+word}    If var is set, word is substituted for var. The value of var does not change.
+
+-----------------------------------Table end-------------------------
+
+
+Ex.
+
+
+------------------------
+
+#!/bin/sh
+
+echo ${var:-"Variable is not set"}
+echo "1 - Value of var is ${var}"
+
+echo ${var:="Variable is not set"}
+echo "2 - Value of var is ${var}"
+
+unset var
+echo ${var:+"This is default value"}
+echo "3 - Value of var is $var"
+
+var="Prefix"
+echo ${var:+"This is default value"}
+echo "4 - Value of var is $var"
+
+echo ${var:?"Print this message"}
+echo "5 - Value of var is ${var}"
+Upon execution, you will receive the following result −
+
+Variable is not set
+1 - Value of var is
+Variable is not set
+2 - Value of var is Variable is not set
+
+3 - Value of var is
+This is default value
+4 - Value of var is Prefix
+Prefix
+5 - Value of var is Prefix
+
+
+------------------------
+
+
+
+_________________________
+SHELL QUOTING MECHANISMS|
+________________________|
+
+
+
+
+THE METACHARACTERS 
+
+
+
+Unix shell provides various metacharacters which have special meaning in using them in any shell script and causes termination of a word unless quoted. 
+
+FOr ex, 
+'?' matches with a single character while listing files in a directory.
+'*' matches with all characters while listing files in a directory
+
+Most of the shell special characters also called as Metacharacters
+
+* ? [ ] ' " \ $ ; & ( ) | ^ < > new-line space tab
+
+
+A character may be quoted (i.e., made to stand for itself) by preceding it with a \.
+
+For example, 
+Following shows how to print a '*' or a '?'
+
+---------
+infinity@infinityv:~/Documents/LINUX$ echo hello; world
+hello
+
+Command 'word' not found, did you mean:
+
+  command 'world' from snap world (4.0)
+  command 'sword' from snap sword (4.0.3)
+  command 'mord' from deb scotch (6.0.9-1)
+  command 'gord' from deb scotch (6.0.9-1)
+  command 'wyrd' from deb wyrd (1.4.6-5)
+  command 'worm' from deb bsdgames (2.17-28build1)
+
+See 'snap info <snapname>' for additional versions.
+
+---------
+
+In the above script, there was no special character that could suppress the termination character ';'. So there was end of the line and the script was termination as soon as it reached ';' and the other word 'world'
+was not considered part of the script and threw an error on that.
+It is to mention a special escape character to stop the termination as below
+
+
+---------
+infinity@infinityv:~/Documents/LINUX$ echo Hello\; word
+Hello; word
+infinity@infinityv:~/Documents/LINUX$ 
+---------
+
+
+The '$' sign is one of the metacharacters, so it must be quoted to avoid special handling by the shell
+
+In the same way as below
+---------
+infinity@infinityv:~/Documents/LINUX$ echo "I have \$5000"
+I have $5000
+---------
+
+
+
+
+The Following table lists the four forms of quoting:
+
+
+--------------------------Table--------------------------------------
+
+Sr.No.	Quoting & Description
+1	Single quote      All special characters between these quotes lose their special meaning.
+2	Double quote      Most special characters between these quotes lose their special meaning with these exceptions −
+
+--->   $
+--->   `
+--->   \$
+--->   \'
+--->   \"
+--->   \\
+3	Backslash         Any character immediately following the backslash loses its special meaning.
+4	Back quote        Anything in between back quotes would be treated as a command and would be executed.
+-----------------------------------Table end--------------------------
+
+
+The SINGLE QUOTE
+
+
+Consider an echo command that contains many special shell characters
+
+echo <-$1500.**>; (update?) [y|n]
+
+But putting a backslash in front of each special character is tedious and makes the line difficult to read.
+
+echo \<-\$4000.\*\*\>\; \(update\?\) \[y\|n\]
+
+
+
+***There is an easy way to quote a large group of characters. Put a single quote (') at the beginning and at the  end of the string
+
+echo '<-$1500.**>; (update?) [y|n]'
+
+
+***Characters within single quotes are quoted just as if a backslash is in front of each character. With this, the echo command displays in a proper way.
+
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+If a single quote appears within a string to be output, you should not put the whole string within the single quotes instead you should precede that using a backslash (\) as follows
+
+echo 'It\'s Shell Programming'
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+
+
+
+THE DOUBLE QUOTES
+
+
+Below shows the shell script makes use of single quotes
+
+
+VAR=LAURA
+echo '$VAR owes <-$200.**>; [ as of ('date +%m/%d') ]'
+
+---------
+infinity@infinityv:~/Documents/LINUX$ VAR=LAURA
+infinity@infinityv:~/Documents/LINUX$ echo '$VAR owes <-$200.**>; [ as of ('date +%m/%d') ]'
+$VAR owes <-$200.**>; [ as of (`date +%m/%d`) ]
+infinity@infinityv:~/Documents/LINUX$
+---------
+
+
+Upon execution in the above, the echo has n't render the substitution variable 'VAR' as it is enclosed in 'single quotes'
+
+***Single quotes prevent variable sunstitution. If you want to substitute variable values and to make inverted commas work as expected, then you would need to put your commands in double quotes as follows
+
+
+VAR=ZARA
+echo "$VAR owes <-\$200.**>; [ as of (`date +%m/%d`) ]"
+
+---------
+infinity@infinityv:~/Documents/LINUX$ echo "$VAR owes <-\$200.**>; [ as of (`date +%m/%d`) ]"
+LAURA owes <-$200.**>; [ as of (04/28) ]
+infinity@infinityv:~/Documents/LINUX$ 
+---------
+
+Upon the execution of the above script, we get the desired output as double quotes(") will render the variable sunstitution. 
+
+
+Double quotes take away the special meaning of all characters except the following −
+
+$ for parameter substitution
+
+Backquotes for command substitution
+
+\$ to enable literal dollar signs
+
+\` to enable literal backquotes
+
+\" to enable embedded double quotes
+
+\\ to enable embedded backslashes
+
+All other \ characters are literal (not special)
+
+Characters within single quotes are quoted just as if a backslash is in front of each character. This helps the echo command display properly.
+
+
+
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+If a single quote appears within a string to be output, you should not put the whole string within single quotes instead you should precede that using a backslash (\) as follows −
+
+echo 'It\'s Shell Programming'
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+
+
+
+
+
+THE BACKQOUTES
+
+
+
+
+Putting any shell command in between 'backqoutes' executes the command.
+
+
+Syntax:
+
+Here is the simple syntax to put any Shell command in between quotes
+
+var=`command`
+
+
+
+Example:
+
+
+
+The date command is executed in the following example and the produced result is stored in DATA variable.
+
+Live Demo
+DATE=`date`
+
+echo "Current Date: $DATE"
+Upon execution, you will receive the following result −
+
+Current Date: Thu Jul  2 05:28:45 MST 2009
+
+
+
+---------
+infinity@infinityv:~/Documents/LINUX$ D=`date`
+infinity@infinityv:~/Documents/LINUX$ echo "$D"
+Thursday 28 April 2022 01:16:35 PM IST
+infinity@infinityv:~/Documents/LINUX$ 
+---------
+
+
+
+
+
+________________________________
+SHELL INPUT/OUTPUT REDIRECTIONS|
+_______________________________|
+
+
+
+-The below is the in-detail about the Shell input/output redirections. 
+-Most Unix system commands take input from your terminal and send resulting ouput back to your terminal.
+-A command normally reads its input from the standard input, which happens to be your terminal by default.
+-A command normally writes its output to standard output, which is again your terminal by default.
+
+
+
+OUTPUT REDIRECTION
+
+
+The output from a command normally intended for standard ouput can be easily diverted to a file instead. This capability is known as 'output redirection'.
+
+If the notation 'command > file', then it normally writes its output to standard output, the output of that command will be written to file 'file' instead of your terminal.
+
+Check the following 'ls' command which redirects the complete ouput of the command in the users file.
+
+---------
+infinity@infinityv:~/Desktop$ ls > items
+infinity@infinityv:~/Desktop$ cat items
+AWS
+cron_trial
+doubts
+file_to_size
+handy_terms
+IMPORTANT TASKS
+items
+search
+infinity@infinityv:~/Desktop$ ls
+ AWS          doubts         handy_terms        items
+ cron_trial   file_to_size  'IMPORTANT TASKS'   search
+infinity@infinityv:~/Desktop$
+---------
+
+In the above command, it is acheived normally through the command
+'ls | cat > items'
+
+
+but no need to go for such a long command like above. Instead the output of the command can be directly redirect to file as above terminal
+'ls > items'
+
+
+Notice that no output appears at the terminal, This is because the ouptut has been redirected from the default standard output device(the terminal) in to the specified file. You can check the 'items' file for the complete content.
+
+'cat items'
+
+---------
+
+infinity@infinityv:~/Desktop$ cat items
+AWS
+cron_trial
+doubts
+file_to_size
+handy_terms
+IMPORTANT TASKS
+items
+search
+---------
+
+
+If a command hs its ouput redirected to a file and the file already contains some data, that data will be lost. But instead we can use '>>' operator to append the data to output to an pre-existing content file.
+
+echo line 2 >> users
+
+
+---------
+infinity@infinityv:~/Desktop$ echo strawberry >> items
+infinity@infinityv:~/Desktop$ cat items
+AWS
+cron_trial
+doubts
+file_to_size
+handy_terms
+IMPORTANT TASKS
+items
+itemsc
+search
+line 1
+strawberry
+---------
+
+
+
+From the above, 'echo' command can also input or append any items to a text file using '>>' operator. 
+
+You can use '>>' operator to append the ouput to the pre-existing file as as above
+
+
+
+INPUT REDIRECTION
+
+
+Just as the ouput of a command can be redirected to a file, so can the input of a command be redirected from a file. As the 'Greated-than'(>) character used for 'output redirection, the 'less-than' character '<' is used to redirect the input of a command.
+
+
+The commands that normally take their input from the standard input can have input redirected from a file in this manner. For example, to count the number of the file users generated above, you can execute the command as follows
+
+'wc -l items'
+
+
+In the above command 'wc -l items', 'items' being the file in the directory as below in the terminal
+
+---------
+infinity@infinityv:~/Desktop$ wc -l items
+12 items
+---------
+
+upon the executin, you will receive the following above output. You can count the number of lines in the file 'items'
+
+
+wc -l < items
+
+Upon the execution of the above command in terminal 
+
+
+---------
+infinity@infinityv:~/Desktop$ wc -l < items
+12
+infinity@infinityv:~/Desktop$ 
+---------
+
+
+The first command 'wc -l items' and second one 'wc -l < items' outputs have a major difference in the output as in the first case is giving the 'directory name'  or giving the details of what or which like '12 items'  in the second one with input 'wc -l < items' is not providing the output with the details.
+
+
+***In the first case with command 'wc -l items', it is showing the output by reading the input from the file 'items'. 
+
+***In  the second case with command 'wc -l < items', it is showing the output by reading the input from the standard input so it does not display the file name.
+
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+HERE DOCUMENT
+
+
+A 'here docuement' is used to redirect input into an interactive shell script or program.
+
+We can run an interactive program within a shell script without user action by supplying the required input for the interactive program, or interactive shell script.
+
+The general form for a here document is 
+
+
+'command << delimiter
+document 
+delimiter'
+
+
+Here the shell interprets the '<<' operator as an instruction until it finds a line containing the specified delimiter. All the input lines up to line containing the delimiter are then fed in to the standard input of the command.
+
+The delimiter tells the shell that the 'here document' has completed. Without it, the shell continues to read the input forever. The delimiter must be a single word that does not contain spaces or tabs.
+
+Following is the input to the command 'wc -l' to count the total number of lines
+
+---------
+infinity@infinityv:~/Desktop$ wc -l << EOF
+> This is a simple lookup program 
+> for good (and bad) restaurants
+>  in New York
+> EOF
+3
+infinity@infinityv:~/Desktop$ 
+---------
+
+You can use the 'here document' to print multiple lines using your script as follows
+
+------------------------
+#!/bin/sh
+
+cat << EOF
+This is a simple lookup program 
+for good (and bad) restaurants
+in Cape Town.
+EOF	
+------------------------
+
+
+
+Upon the execution, you will receive the following result
+
+This is a simple lookup program
+for good (and bad) restaurants
+in Cape Town.
+
+
+
+The following script runs a session with the vi text editor and saves the input in the file test.txt.
+
+#!/bin/sh
+
+filename=test.txt
+vi $filename <<EndOfCommands
+i
+This file was created automatically from
+a shell script
+^[
+ZZ
+EndOfCommands
+If you run this script with vim acting as vi, then you will likely see output like the following −
+
+$ sh test.sh
+Vim: Warning: Input is not from a terminal
+$
+
+
+After running the script, you should see the following added to the file test.txt −
+
+$ cat test.txt
+This file was created automatically from
+a shell script
+$
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+
+
+
+
+
+
+
+
+
+
+DISCARD THE OUTPUT
+
+
+
+Sometimes you will need to execute a command, but you don't want the output displayed on the screen. In such cases, you can discard the output by redirecting the output to file /dev/null
+
+
+
+'command > /dev/null'
+
+here command is the name of the command you want to execute. The file '/dev/null/' is a special file that discards all of its input automatically.
+
+To discard both output of a command and its error output, use standard redirection to redirect 'STDERR to STDOUT'
+
+'command > /dev/null 2>&1'
+
+Here 2 represents 'STDERR' and 1 represents 'STDOUT'. You can display a message on to 'STDERR' by redirecting 'STDOUT' into 'STDERR' as follows
+
+
+'echo message 1>&2'
+
+
+REDIRECTION COMMANDS
+
+
+Following is a complete list of commands which you can use for redirection
+
+
+
+------------------------------Table----------------------------------
+
+Sr.No.	Command & Description
+1	pgm > file    Output of pgm is redirected to file
+2	pgm < file    Program pgm reads its input from file
+3	pgm >> file    Output of pgm is appended to file
+4	n > file    Output from stream with descriptor n redirected to file
+5	n >> file    Output from stream with descriptor n appended to file
+6	n >& m    Merges output from stream n with stream m
+7	n <& m    Merges input from stream n with stream m
+8	<< tag    Standard input comes from here through next tag at the start of line
+9	|    Takes output from program, or process,& sends it to another
+
+
+----------------------------Table end--------------------------------
+
+
+***Note that the file descriptor 0 is normally standard input (STDIN), 1 is standard output (STDOUT), and 2 is standard error output (STDERR).
+
+
+
+
+________________
+SHELL FUNCTIONS|
+_______________|
+
+
+
+Functions enables you to break down the overall functionality of a script into smaller, logical subsections, which can be then called upon to perform their individual task when needed.
+
+
+Functions are good at using them at repetitive tasks is an excellent way to reuse the code. This is an important part of modern object-oriented programming principles. 
+
+Shell functions are similar to subroutines, procedires and functions in other programming languages.
+
+
+
+CREATING FUNCTIONS
+
+
+
+To declare a function, below is the syntax
+
+function_name () {
+
+   list_of_commands
+}
+
+
+---------
+infinity@infinityv:~/Desktop$ greet () { echo "hello world"; }
+infinity@infinityv:~/Desktop$ greet
+hello world
+infinity@infinityv:~/Desktop$ 
+---------
+
+
+
+In the above terminal line, it is performed in a single line 
+
+
+If it is written in a file
+
+
+---------
+
+infinity@infinityv:~/Desktop$ vim linux_function
+infinity@infinityv:~/Desktop$ chmod +x linux_function 
+infinity@infinityv:~/Desktop$ vim linux_function 
+#!/bin/bash
+
+greet () {
+        echo "Hi and Good Morning"
+}
+
+greet
+
+infinity@infinityv:~/Desktop$ ./linux_function 
+Hi and Good Morning
+---------
+
+
+
+PASS PARAMETERS TO A  FUNCTION :
+
+
+You can define a function that will accept the parameters while calling the function. These parameters would be represented by $1, $2 and so on.
+
+Below is the code for doing as per above 
+
+---------
+#!/bin/bash
+
+greet () {
+        echo "Hi Good Morning, $1"
+}
+
+greet "Kittu"
+
+
+
+infinity@infinityv:~/Downloads/bash_pracise_files$ ./passing_parameters 
+Hi Good Morning, Kittu
+---------
+
+
+In the above program, the function is in a file 'passing_parameters' and when the file is executed, ./passing_parameters, the result is given.
+
+
+
+RETURNING VALUES FROM FUNCTIONS
+
+
+
+
+If you execute an exit command from the inside of a function, its effect is not only to terminate execution of the function but also of the shell programming that called the function.
+
+If you instead want to just terminate execution of the function, then there is way to come out of a defined function.
+
+Based on the situation you can return any value from your function using the return command. Below is the syntax
+
+'return <variable or code>'
+
+
+
+#!/bin/sh
+
+# Define your function here
+Hello () {
+   echo "Hello World $1 $2"
+   return 10
+}
+
+# Invoke your function
+Hello Kittu C
+
+# Capture value returnd by last command
+ret=$?
+
+echo "Return value is $ret"
+Upon execution, you will receive the following result −
+
+$./test.sh
+Hello World Kittu C
+Return value is 10
+
+---------
+
+
+
+
+NESTED FUNCTIONS
+
+
+One of the more interesting features of functions is that they can call themselves and also other functions. A function that calls itself is known as a 'recursive function'
+
+---------
+
+#!/bin/sh
+
+# Calling one function from another
+number_one () {
+   echo "This is the first function speaking..."
+   number_two
+}
+
+number_two () {
+   echo "This is now the second function speaking..."
+}
+
+# Calling function one.
+number_one
+
+---------
+
+Upon execution, you will receive the following result −
+---------
+This is the first function speaking...
+This is now the second function speaking...
+---------
+
+
+
+FUNCTION CALL FROM PROMPT
+
+
+You can put definitions for commonly used functions inside your '.profile'. These definitions will be available whenever you log in and you can use them at the command prompt. 
+
+Alternatively, you can group the definitions in a file, say test.sh and then execute the file in the current shell by typing 
+
+
+'. test.sh'
+
+
+This has the effect of causing functions definitions inside test.sh to be read and defined to the current shell as follows
+
+'number_one'
+This is the first function speaking...
+This is now the second function speaking...
+
+
+To remove the definition of a function from the shell, use the unset command with the .f option. This command is also used to remove the definitions of a variable to the shell.
+
+
+'unset -f function_name'
+
+
+
+__________________
+SHELL MANPAGE HELP|
+__________________|
+
+
+
+All the Unix commmands come with a number of optional and mandatory options. It is very common to forget the complete syntax of these commands.
+
+Because no one can possibly remember every Unix command and all its options, we have online help available to mitigate this right from when the Unix was its development stage.
+
+Unix's version of Help files are called 'man pages'. If there is a command name and you are not sure how to use it, then Man Pages help you out with step.
+
+
+Syntax:
+
+man <command>
+
+
+ex,
+
+man pwd 
+
+---------
+PWD(1)                       User Commands                      PWD(1)
+
+NAME
+       pwd - print name of current/working directory
+
+SYNOPSIS
+       pwd [OPTION]...
+
+DESCRIPTION
+       Print the full filename of the current working directory.
+
+       -L, --logical
+              use PWD from environment, even if it contains symlinks
+
+       -P, --physical
+              avoid all symlinks
+
+ Manual page pwd(1) line 1/53 28% (press h for help or q to quit)
+---------
+
+
+MAN PAGE SECTIONS
+
+
+Man page sections are generally divided into secions, which generally vary by the man page author's preference. 
+
+
+
+--------------------------------Table--------------------------------
+
+Sr.No.	Section & Description
+1	NAME        Name of the command
+2	SYNOPSIS    General usage parameters of the command
+3	DESCRIPTION Describes what the command does
+4	OPTIONS     Describes all the arguments or options to the command
+5	SEE ALSO    Lists other commands that are directly related to the command in the man page or closely resemble its functionality
+6	BUGS        Explains any known issues or bugs that exist with the command or its output
+7	EXAMPLES    Common usage examples that give the reader an idea of how the command can be used
+8	AUTHORS     The author of the man page/command
+
+-------------------------------Table end-----------------------------
+
+
+
+USEFUL SHELL COMMANDS
+
+
+Useful Shell Commands
+The following link gives you a list of the most important and very frequently used Unix Shell commands.
+
+If you do not know how to use any command, then use man page to get complete detail about the command.
+
+Here is the list of Unix Shell - Useful Commands(link : https://www.tutorialspoint.com/unix/unix-useful-commands.htm)
+
+
+++++++++++++++++++++++++++++ADVANCED LINUX+++++++++++++++++++++++++++++
+_____________________________
+REGULAR EXPRESSIONS WITH SED|
+____________________________|
+
+
+
+
+Regular expressions are powerful lines which can search lines and can be used to modify, replace or do anyother operation on that searched code.
+
+Regular expressions are used to describe sequences of characters used by several different Unix commands, including ed, sed, awk, grep, and to a more limited extent, Vim.
+
+Here SED stands for 'stream editor'. This stream oriented editor was created exclusively for executing scripts. Thus, all the input you feed into it passes through and goes to STDOUT and it does not change the input file.
+
+
+
+
+INVOKING SED
+
+
+Let's have a local copy of '/etc/passwd' text file to work with 'sed'.
+
+
+As mentioned previously, 'sed'can be invoked by sending data through a pipe to it as follows
+
+
+---------
+infinity@infinityv:~$ cat passwd | sed
+Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+
+  -n, --quiet, --silent
+                 suppress automatic printing of pattern space
+      --debug
+                 annotate program execution
+  -e script, --expression=script
+                 add the script to the commands to be executed
+  -f script-file, --file=script-file
+                 add the contents of script-file to the commands to be executed
+  --follow-symlinks
+                 follow symlinks when processing in place
+  -i[SUFFIX], --in-place[=SUFFIX]
+                 edit files in place (makes backup if SUFFIX supplied)
+  -l N, --line-length=N
+                 specify the desired line-wrap length for the `l' command
+  --posix
+                 disable all GNU extensions.
+  -E, -r, --regexp-extended
+                 use extended regular expressions in the script
+                 (for portability use POSIX -E).
+  -s, --separate
+                 consider files as separate rather than as a single,
+                 continuous long stream.
+      --sandbox
+                 operate in sandbox mode (disable e/r/w commands).
+  -u, --unbuffered
+                 load minimal amounts of data from the input files and flush
+                 the output buffers more often
+  -z, --null-data
+                 separate lines by NUL characters
+      --help     display this help and exit
+      --version  output version information and exit
+
+If no -e, --expression, -f, or --file option is given, then the first
+non-option argument is taken as the sed script to interpret.  All
+remaining arguments are names of input files; if no input files are
+specified, then the standard input is read.
+
+GNU sed home page: <https://www.gnu.org/software/sed/>.
+General help using GNU software: <https://www.gnu.org/gethelp/>.
+---------
+
+
+The 'cat' command dumps the contents of '~/passwd' text file  to 'sed' through the pipe into sed's pattern space. 
+
+***The pattern space is the internal work buffer that sed uses for its operations.
+
+
+
+
+
+THE 'sed' GENERAL SYNTAX
+
+
+
+
+SYNTAX
+
+/pattern/action
+
+
+Here, 'pattern' is a regular expression, and 'action' is one of the commands given in the following table. If 'pattern' is omitted, 'action' is performed for every line as we have seen above. 
+
+The slash (/) character that surrounds the pattern is for the separation between them or delimiters.
+
+
+
+----------------------------Table-----------------------------------
+
+Sr.No.	Range & Description
+1	p    Prints the line
+2	d    Deletes the line
+3	s/pattern1/pattern2/    Substitutes the first occurrence of pattern1 with pattern2
+
+
+-----------------------------Table end-------------------------------
+
+
+DELETING ALL LINES WITH 'sed'
+
+
+Now the 'sed' is now supposed to use the 'editing command line delete line', denoted by letter 'd'
+
+
+cat ~/passwd |sed 'd'
+
+
+Instead of invoking 'sed' by sending a file to it through a pipe, the 'sed' can be instructed to read the data from a file as below 
+
+
+'sed -e 'd' ~/passwd'
+
+
+
+THE 'sed' ADDRESSES
+
+
+The 'sed' also supports addresses. Addresses are either particular locaitions in a file or a range  where a particular editing commands should be applied. When the 'sed' encounters no addresses, it performs its operations on every line in the file.
+
+
+The following command adds a basic address to the sed command 
+
+cat ~/passwd | sed '1d' | more
+
+
+---------
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+--More--
+---------
+
+
+***Notice that the number '1' is added before the 'delete edit' command. This instructs the 'sed' to perform the editing command on the first line of the file. In the example, the 'sed' will delete the first line of '/etc/passwd' and print the rest of the file.
+
+
+
+THE 'sed' ADDRESS RANGES
+
+
+
+We will now understand how to work with the address ranges. So, what if you want to remove more than one line from a file. You can specift an address ranges with 'sed' as follows
+
+
+---------
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbi
+n/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/us
+--More--
+
+---------
+
+
+The above command will be applied on all the lines starting from 1 to 5. This deletes lines from 1 to 5 and prints other lines.
+
+
+------------------------------Table----------------------------------
+
+Try out the following address ranges −
+
+Sr.No.	Range & Description
+1	
+'4,10d'
+
+Lines starting from the 4th till the 10th are deleted
+
+2	
+'10,4d'
+
+Only 10th line is deleted, because the sed does not work in reverse direction
+
+3	
+'4,+5d'
+
+This matches line 4 in the file, deletes that line, continues to delete the next five lines, and then ceases its deletion and prints the rest
+
+4	
+'2,5!d'
+
+This deletes everything except starting from 2nd till 5th line
+
+5	
+'1~3d'
+
+This deletes the first line, steps over the next three lines, and then deletes the fourth line. Sed continues to apply this pattern until the end of the file.
+
+6	
+'2~2d'
+
+This tells sed to delete the second line, step over the next line, delete the next line, and repeat until the end of the file is reached
+
+7	
+'4,10p'
+
+Lines starting from 4th till 10th are printed
+
+8	
+'4,d'
+
+This generates the syntax error
+
+9	
+',10d'
+
+This would also generate syntax error
+
+--------------------------------Table end-----------------------------
+
+
+
+***Note- while using the 'p' action, you should use 'n' option to avoid repetition of the line printing. Check the difference in between the following two commands
+
+
+cat ~/passwd | sed -n '1, 3p'
+
+
+---------
+infinity@infinityv:~$ cat ~/passwd | sed -n '1, 3p'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+
+---------
+
+
+
+In case, you don't use  '-n' flag then as below repetition of lines will happen.
+
+
+---------
+infinity@infinityv:~$ cat ~/passwd | sed '1, 3p'
+root:x:0:0:root:/root:/bin/bash
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:116::/nonexistent:/usr/sbin/nologin
+avahi-autoipd:x:109:117:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+rtkit:x:111:118:RealtimeKit,,,:/proc:/usr/sbin/nologin
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+speech-dispatcher:x:115:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:116:123:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/nologin
+kernoops:x:117:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+saned:x:118:125::/var/lib/saned:/usr/sbin/nologin
+nm-openvpn:x:119:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+hplip:x:120:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:121:127::/nonexistent:/bin/false
+colord:x:122:128:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+geoclue:x:123:129::/var/lib/geoclue:/usr/sbin/nologin
+pulse:x:124:130:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/nologin
+infinity:x:1000:1000:infinity,,,:/home/infinity:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:125:65534::/run/sshd:/usr/sbin/nologin
+postfix:x:126:136::/var/spool/postfix:/usr/sbin/nologin
+---------
+
+
+
+
+THE SUBSTITUTION COMMAND
+
+The substitution command, denoted by 's' will substitute any string that you  specify with any other that you specify
+
+To substitute one string with another, the 'sed' needs information on where the first string ends and the substitutio string begins. we separate with the '/' as a delimiters.
+
+
+cat ~/passwd | sed 's/nologin/kittu/'
+
+---------
+
+infinity@infinityv:~$ cat ~/passwd | sed 's/nologin/kittu/'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/kittu
+bin:x:2:2:bin:/bin:/usr/sbin/kittu
+sys:x:3:3:sys:/dev:/usr/sbin/kittu
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/kittu
+man:x:6:12:man:/var/cache/man:/usr/sbin/kittu
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/kittu
+mail:x:8:8:mail:/var/mail:/usr/sbin/kittu
+news:x:9:9:news:/var/spool/news:/usr/sbin/kittu
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/kittu
+proxy:x:13:13:proxy:/bin:/usr/sbin/kittu
+www-data:x:33:33:www-data:/var/www:/usr/sbin/kittu
+backup:x:34:34:backup:/var/backups:/usr/sbin/kittu
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/kittu
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/kittu
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/kittu
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/kittu
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/kittu
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/kittu
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/kittu
+messagebus:x:103:106::/nonexistent:/usr/sbin/kittu
+syslog:x:104:110::/home/syslog:/usr/sbin/kittu
+_apt:x:105:65534::/nonexistent:/usr/sbin/kittu
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/kittu
+tcpdump:x:108:116::/nonexistent:/usr/sbin/kittu
+avahi-autoipd:x:109:117:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/kittu
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/kittu
+rtkit:x:111:118:RealtimeKit,,,:/proc:/usr/sbin/kittu
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/kittu
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/kittu
+lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+speech-dispatcher:x:115:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:116:123:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/kittu
+kernoops:x:117:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/kittu
+saned:x:118:125::/var/lib/saned:/usr/sbin/kittu
+nm-openvpn:x:119:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/kittu
+hplip:x:120:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:121:127::/nonexistent:/bin/false
+colord:x:122:128:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/kittu
+geoclue:x:123:129::/var/lib/geoclue:/usr/sbin/kittu
+pulse:x:124:130:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/kittu
+infinity:x:1000:1000:infinity,,,:/home/infinity:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/kittu
+sshd:x:125:65534::/run/sshd:/usr/sbin/kittu
+postfix:x:126:136::/var/spool/postfix:/usr/sbin/kittu
+---------
+
+
+***It is very important to note that 'sed' substitutes only the first occurence on a line in other words 'per line'. If the string 'root' occurs more than once on a line only the first match will be replaced. 
+
+***For the 'sed' to perform a 'global' substitution , add 'g' in the end of the command as below to apply it globally.
+
+
+cat ~/paswd | sed 's/nologin/strawberry/g'
+
+
+
+---------
+infinity@infinityv:~$ cat ~/passwd | sed 's/nologin/strawberry/g'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/strawberry
+bin:x:2:2:bin:/bin:/usr/sbin/strawberry
+sys:x:3:3:sys:/dev:/usr/sbin/strawberry
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/strawberry
+man:x:6:12:man:/var/cache/man:/usr/sbin/strawberry
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/strawberry
+mail:x:8:8:mail:/var/mail:/usr/sbin/strawberry
+news:x:9:9:news:/var/spool/news:/usr/sbin/strawberry
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/strawberry
+proxy:x:13:13:proxy:/bin:/usr/sbin/strawberry
+www-data:x:33:33:www-data:/var/www:/usr/sbin/strawberry
+backup:x:34:34:backup:/var/backups:/usr/sbin/strawberry
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/strawberry
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/strawberry
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/strawberry
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/strawberry
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/strawberry
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/strawberry
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/strawberry
+messagebus:x:103:106::/nonexistent:/usr/sbin/strawberry
+syslog:x:104:110::/home/syslog:/usr/sbin/strawberry
+_apt:x:105:65534::/nonexistent:/usr/sbin/strawberry
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/strawberry
+tcpdump:x:108:116::/nonexistent:/usr/sbin/strawberry
+avahi-autoipd:x:109:117:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/strawberry
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/strawberry
+rtkit:x:111:118:RealtimeKit,,,:/proc:/usr/sbin/strawberry
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/strawberry
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/strawberry
+lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+speech-dispatcher:x:115:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:116:123:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/strawberry
+kernoops:x:117:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/strawberry
+saned:x:118:125::/var/lib/saned:/usr/sbin/strawberry
+nm-openvpn:x:119:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/strawberry
+hplip:x:120:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:121:127::/nonexistent:/bin/false
+colord:x:122:128:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/strawberry
+geoclue:x:123:129::/var/lib/geoclue:/usr/sbin/strawberry
+pulse:x:124:130:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/strawberry
+infinity:x:1000:1000:infinity,,,:/home/infinity:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/strawberry
+sshd:x:125:65534::/run/sshd:/usr/sbin/strawberry
+postfix:x:126:136::/var/spool/postfix:/usr/sbin/strawberry
+---------
+
+
+
+Substitution Flags
+There are a number of other useful flags that can be passed in addition to the g flag, and you can specify more than one at a time.
+
+
+------------------------------------Table----------------------------
+Sr.No.	Flag & Description
+1	g    Replaces all matches, not just the first match
+2	NUMBER    Replaces only NUMBERth match
+3	p    If substitution was made, then prints the pattern space
+4	w FILENAME    If substitution was made, then writes result to FILENAME
+5	I or i    Matches in a case-insensitive manner
+6	M or m    In addition to the normal behavior of the special regular expression characters ^ and $, this flag causes ^ to match the empty string after a newline and $ to match the empty string before a newline
+-------------------------------Table end-----------------------------
+
+
+
+In addition to the normal behavior of the special regular expression characters ^ and $, this flag causes ^ to match the empty string after a newline and $ to match the empty string before a newline
+
+
+
+USING AN ALTERNATIVE STRING SEPARATOR
+
+
+Suppose you have to do a substitution on a string that includes the forward slash(/) character. In this case, you can specify a different separator by providing the designated character after the 's'.
+
+cat ~/passwd | sed 's:/nologin:/mango:g'
+
+
+---------
+infinity@infinityv:~$ cat ~/passwd | sed 's:/nologin:/mango:g'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/mango
+bin:x:2:2:bin:/bin:/usr/sbin/mango
+sys:x:3:3:sys:/dev:/usr/sbin/mango
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/mango
+man:x:6:12:man:/var/cache/man:/usr/sbin/mango
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/mango
+mail:x:8:8:mail:/var/mail:/usr/sbin/mango
+news:x:9:9:news:/var/spool/news:/usr/sbin/mango
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/mango
+proxy:x:13:13:proxy:/bin:/usr/sbin/mango
+www-data:x:33:33:www-data:/var/www:/usr/sbin/mango
+backup:x:34:34:backup:/var/backups:/usr/sbin/mango
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/mango
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/mango
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/mango
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/mango
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/mango
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/mango
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/mango
+messagebus:x:103:106::/nonexistent:/usr/sbin/mango
+syslog:x:104:110::/home/syslog:/usr/sbin/mango
+_apt:x:105:65534::/nonexistent:/usr/sbin/mango
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/mango
+tcpdump:x:108:116::/nonexistent:/usr/sbin/mango
+avahi-autoipd:x:109:117:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/mango
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/mango
+rtkit:x:111:118:RealtimeKit,,,:/proc:/usr/sbin/mango
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/mango
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/mango
+lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+speech-dispatcher:x:115:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:116:123:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/mango
+kernoops:x:117:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/mango
+saned:x:118:125::/var/lib/saned:/usr/sbin/mango
+nm-openvpn:x:119:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/mango
+hplip:x:120:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:121:127::/nonexistent:/bin/false
+colord:x:122:128:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/mango
+geoclue:x:123:129::/var/lib/geoclue:/usr/sbin/mango
+pulse:x:124:130:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/mango
+infinity:x:1000:1000:infinity,,,:/home/infinity:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/mango
+sshd:x:125:65534::/run/sshd:/usr/sbin/mango
+postfix:x:126:136::/var/spool/postfix:/usr/sbin/mango
+
+
+---------
+
+
+
+
+REPLACING WIT EMPTY SPACE
+
+
+Use an empty substitution string to delete the root string from the /etc/passwd file entirely −
+
+$ cat /etc/passwd | sed 's/root//g'
+
+
+
+
+---------
+infinity@infinityv:~$ cat ~/passwd | sed 's/sbin//g'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/:/usr//nologin
+bin:x:2:2:bin:/bin:/usr//nologin
+sys:x:3:3:sys:/dev:/usr//nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr//nologin
+man:x:6:12:man:/var/cache/man:/usr//nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr//nologin
+mail:x:8:8:mail:/var/mail:/usr//nologin
+news:x:9:9:news:/var/spool/news:/usr//nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr//nologin
+proxy:x:13:13:proxy:/bin:/usr//nologin
+www-data:x:33:33:www-data:/var/www:/usr//nologin
+backup:x:34:34:backup:/var/backups:/usr//nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr//nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr//nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr//nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr//nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr//nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr//nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr//nologin
+messagebus:x:103:106::/nonexistent:/usr//nologin
+syslog:x:104:110::/home/syslog:/usr//nologin
+_apt:x:105:65534::/nonexistent:/usr//nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr//nologin
+tcpdump:x:108:116::/nonexistent:/usr//nologin
+avahi-autoipd:x:109:117:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr//nologin
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr//nologin
+rtkit:x:111:118:RealtimeKit,,,:/proc:/usr//nologin
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr//nologin
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr//nologin
+lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+speech-dispatcher:x:115:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:116:123:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr//nologin
+kernoops:x:117:65534:Kernel Oops Tracking Daemon,,,:/:/usr//nologin
+saned:x:118:125::/var/lib/saned:/usr//nologin
+nm-openvpn:x:119:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr//nologin
+hplip:x:120:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:121:127::/nonexistent:/bin/false
+colord:x:122:128:colord colour management daemon,,,:/var/lib/colord:/usr//nologin
+geoclue:x:123:129::/var/lib/geoclue:/usr//nologin
+pulse:x:124:130:PulseAudio daemon,,,:/var/run/pulse:/usr//nologin
+infinity:x:1000:1000:infinity,,,:/home/infinity:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr//nologin
+sshd:x:125:65534::/run/sshd:/usr//nologin
+postfix:x:126:136::/var/spool/postfix:/usr//nologin
+---------
+
+
+
+ADDRESS SUBSTITUTION
+
+
+If you want to substitute the string 'sh' with the string 'quiet' only on line 10, you can specify it as follows
+
+
+
+
+'cat ~/pass | sed '10s/sh/quiet/g'
+
+
+---------
+infinity@infinityv:~$ cat pass
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+---------
+
+
+Inorder to substitute the specific instance of a word in a line, 
+'cat pass | sed '3s/nologin/mango/g'
+
+
+---------
+infinity@infinityv:~$ cat pass | sed '3s/nologin/mango/g'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/mango
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+---------
+
+
+If the task is to replace a word occuring multiple times in a single lines and in all the lines then,  if you want to replace a few lines with the other word, then,
+
+cat pass | sed '1,5s/bin/orange/g'
+
+---------
+
+
+infinity@infinityv:~$ cat pass | sed '1,5s/bin/orange/g'
+root:x:0:0:root:/root:/orange/bash
+daemon:x:1:1:daemon:/usr/sorange:/usr/sorange/nologin
+orange:x:2:2:orange:/orange:/usr/sorange/nologin
+sys:x:3:3:sys:/dev:/usr/sorange/nologin
+sync:x:4:65534:sync:/orange:/orange/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+infinity@infinityv:~$ 
+
+---------
+
+
+
+As you can see from the output, the first five lines had the string 'bin' changed to 'orange', but the rest of the lines were left untouched.
+
+
+
+THE MATCHING COMMAND
+
+
+
+You would use the 'p' option along with the '-n' option to print all the matching lines as follows
+
+
+cat pass | sed -n '/root/p'
+
+---------
+infinity@infinityv:~$ cat pass | sed -n '/root/p'
+root:x:0:0:root:/root:/bin/bash
+---------
+
+
+
+
+USING REGULAR EXPRESSION:
+
+
+
+
+While matching patterns, you can use the regular expression which provides more flexibility.
+Check the following example which matches all the lines starting with 'daemon' and then deletes them.
+
+
+---------
+infinity@infinityv:~$ cat pass
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+
+infinity@infinityv:~$ cat pass | sed '/^daemon/d'
+root:x:0:0:root:/root:/bin/bash
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+infinity@infinityv:~$ 
+---------
+
+
+
+Following is the example to delete the lines that end with 'in' in the file 'pass' with content as below
+
+
+---------
+infinity@infinityv:~$ cat pass
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+
+
+infinity@infinityv:~$ cat pass | sed '/in$/d'
+root:x:0:0:root:/root:/bin/bash
+sync:x:4:65534:sync:/bin:/bin/sync
+infinity@infinityv:~$ 
+
+
+---------
+
+
+
+The following table lists four special characters that are very useful in regular expressions
+
+
+--------------------------------Table--------------------------------
+Sr.No.	Character & Description
+1	^    Matches the beginning of lines
+2	$    Matches the end of lines
+3	.    Matches any single character
+4	*    Matches zero or more occurrences of the previous character
+5    [chars]    Matches any one of the characters given in chars, where chars is a sequence of characters. You can use the - character to indicate a range of characters.
+---------------------------------Table end---------------------------
+
+
+
+MATCHING CHARACTERS
+
+
+
+
+Look at a few more expressions to demonstrate the use of 'metacharacters'. For ex. the following pattern
+
+
+---------------------------------Table-------------------------------
+
+Sr.No.	Expression & Description
+1	/a.c/    matches with line such as a+c, a-c, abc, match, and a3c
+2	/a*c/    Matches the same strings along with strings such as ace, yacc, and arctic
+3	/[tT]he/   Matches the string The and the
+4	/^$/     Matches blank lines
+5	/^.*$/    Matches an entire line whatever it is
+6	/ */      Matches one or more spaces
+7	/^$/      Matches blank lines
+
+
+---------------------------------Table end---------------------------
+
+
+Following table shows some frequently used sets of characters
+
+
+------------------------------Table----====---------------------------
+Sr.No.	Set & Description
+1	[a-z]    Matches a single lowercase letter
+2	[A-Z]    Matches a single uppercase letter
+3     [a-zA-Z]   Matches a single letter
+4	[0-9]    Matches a single number
+5    [a-zA-Z0-9] Matches a single letter or number
+
+
+
+-----------------------------Table end-------------------------------
+
+
+
+
+CHARACTER CLASS KEYWORDS
+
+Some special keywords are commonly available to 'regexps', especially GNU utilities that employ 'regexps'. These are very useful for 'sed' regular expressions as they simplify things and enhance readability.
+
+
+For example, the characters 'a' through 'z' and the characters 'A' through 'Z', constitute one such class of characters that has the keywords 
+[[:alpha:]]
+
+
+Using the alphabet character keyword, this command prints only those lines in the '/etc/syslog.conf' file that start with a letter of the alphabet
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+
+
+$ cat /etc/syslog.conf | sed -n '/^[[:alpha:]]/p'
+authpriv.*                         /var/log/secure
+mail.*                             -/var/log/maillog
+cron.*                             /var/log/cron
+uucp,news.crit                     /var/log/spooler
+local7.*                           /var/log/boot.log
+
+
+============NOT PROVED IN THE TERMINAL,IN DOUBT TO BE VERIFIE==========
+
+
+
+
+
+
+The following table is a complete list of the available character class keywords in GNU sed.
+
+-----------------------------------Table-----------------------------
+
+
+Sr.No.	Character Class & Description
+1	[[:alnum:]]     Alphanumeric [a-z A-Z 0-9]
+2	[[:alpha:]]     Alphabetic [a-z A-Z]
+3	[[:blank:]]     Blank characters (spaces or tabs)
+4	[[:cntrl:]]     Control characters
+5	[[:digit:]]     Numbers [0-9]
+6	[[:graph:]]     Any visible characters (excludes whitespace)
+7	[[:lower:]]     Lowercase letters [a-z]
+8	[[:print:]]     Printable characters (non-control characters)
+9	[[:punct:]]     Punctuation characters
+10	[[:space:]]     Whitespace
+11	[[:upper:]]     Uppercase letters [A-Z]
+12	[[:xdigit:]]    Hex digits [0-9 a-f A-F]
+
+
+--------------------------------Table end----------------------------
+
+
+
+AMPERSAND REFERENCING
+
+
+
+The 'sed metacharacter' '&' represents the contents of the pattern that was matched. For instance, say you have a file called 'phone.txt' full of phone numbers. 
+
+
+
+5555551212
+5555551213
+5555551214
+6665551215
+6665551216
+7775551217
+
+
+
+You want to make the area code (the first three digits) surrounded by parentheses for easier reading. To do this, you can use the ampersand replacement character −
+
+
+$ sed -e 's/^[[:digit:]][[:digit:]][[:digit:]]/(&)/g' phone.txt
+(555)5551212
+(555)5551213
+(555)5551214
+(666)5551215
+
+(666)5551216
+(777)5551217
+
+
+
+Here in the pattern part you are matching the first 3 digits and then using & you are replacing those 3 digits with the surrounding parentheses.
+
+
+USING MULTIPLE 'sed' COMMANDS
+
+
+
+You can use multiple sed commands in a single sed command as follows −
+
+
+
+$ sed -e 'command1' -e 'command2' ... -e 'commandN' files
+
+
+
+Here command1 through commandN are sed commands of the type discussed previously. These commands are applied to each of the lines in the list of files given by files.
+
+
+Using the same mechanism, we can write the above phone number example as follows −
+
+
+$ sed -e 's/^[[:digit:]]\{3\}/(&)/g'  \ 
+   -e 's/)[[:digit:]]\{3\}/&-/g' phone.txt 
+(555)555-1212 
+(555)555-1213 
+(555)555-1214 
+(666)555-1215 
+(666)555-1216 
+(777)555-1217
+
+
+
+Note − In the above example, instead of repeating the character class keyword [[:digit:]] three times, we replaced it with \{3\}, which means the preceding regular expression is matched three times. We have also used \ to give line break and this has to be removed before the command is run.
+
+
+
+
+Back References
+The ampersand metacharacter is useful, but even more useful is the ability to define specific regions in regular expressions. These special regions can be used as reference in your replacement strings. By defining specific parts of a regular expression, you can then refer back to those parts with a special reference character.
+
+To do back references, you have to first define a region and then refer back to that region. To define a region, you insert backslashed parentheses around each region of interest. The first region that you surround with backslashes is then referenced by \1, the second region by \2, and so on.
+
+
+
+
+
+Assuming phone.txt has the following text −
+
+
+(555)555-1212
+(555)555-1213
+(555)555-1214
+(666)555-1215
+(666)555-1216
+(777)555-1217
+
+
+
+
+Try the following command −
+
+
+$ cat phone.txt | sed 's/\(.*)\)\(.*-\)\(.*$\)/Area \ 
+   code: \1 Second: \2 Third: \3/' 
+Area code: (555) Second: 555- Third: 1212 
+Area code: (555) Second: 555- Third: 1213 
+Area code: (555) Second: 555- Third: 1214 
+Area code: (666) Second: 555- Third: 1215 
+Area code: (666) Second: 555- Third: 1216 
+Area code: (777) Second: 555- Third: 1217
+
+
+
+
+***Note − In the above example, each regular expression inside the parenthesis would be back referenced by \1, \2 and so on. We have used \ to give line break here. This should be removed before running the command.
+
+
+
+
+__________________
+FILE SYSTEM BASICS|
+__________________|
+
+
+
+A file system is a logical collection of files on a partition or disk. A partition is a container for information and can span an entire hard	drive if desired.
+
+
+Your hard drice can have various partitions which usually contain only one file system, such as one file system housing the '/file system or another containing the /home file system.
+
+
+One file system per partition allows for the logical maintainance and management of differing file systems.
+
+Everything in Unix is considered  to be a file, including physical devices such as DVD-ROMs, USB devices and floppy drives.
+
+
+DIRECTORY STRUCTURE
+
+
+Unix use a hierarchical file system structure, like an upside-down tree, with root(/) at the base of the file system and all other directories spreading from there
+
+A Unix filesystem is a collection of files and directories that has the following properties
+
+-It has a root directory(/) that contains other files and directories
+-Each file or directory is uniquely identified by its name, the directory in which it resides and a unique identifier, typically called an 'inode'
+
+
+-By convention, the root directory has an inode number of '2' and the 'lost+found' directory has an inode number of 3. Inode numbers 0 and 1 are not used . File inode numbers can be seen by specifying the '-i' optionto 'ls' command.
+
+-it is self-contained. There are no dependencies between one filesystem and another.
+
+
+The directories have specific purposes and generally hold the same types of information for easily locating files. Following are the directories that exist on the major versions of Unix
+
+
+--------------------------------------Table--------------------------
+Sr.No.	Directory & Description
+1	/     This is the root directory which should contain only the directories needed at the top level of the file structure
+2	/bin  This is where the executable files are located. These files are available to all users
+3	/dev   These are device drivers
+4	/etc   Supervisor directory commands, configuration files, disk configuration files, valid user lists, groups, ethernet, hosts, where to send critical messages
+5	/lib    Contains shared library files and sometimes other kernel-related files
+6	/boot   Contains files for booting the system
+7	/home   Contains the home directory for users and other accounts
+8	/mnt    Used to mount other temporary file systems, such as cdrom and floppy for the CD-ROM drive and floppy diskette drive, respectively
+9	/proc   Contains all processes marked as a file by process number or other information that is dynamic to the system
+10	/tmp    Holds temporary files used between system boots
+11	/usr    Used for miscellaneous purposes, and can be used by many users. Includes administrative commands, shared files, library files, and others
+12	/var    Typically contains variable-length files such as log and print files and any other type of file that may contain a variable amount of data
+13	/sbin   Contains binary (executable) files, usually for system administration. For example, fdisk and ifconfig utlities
+14	/kernel   Contains kernel files
+
+---------------------------Table end---------------------------------
+
+
+
+NAVIGATING THE FILE SYSTEM
+
+
+
+Now that you understand the basics of the file system, you can begin navigating to the files you need. The following commands are used to navigate the system −
+
+
+
+---------------------------------Table-------------------------------
+
+Sr.No.	Command & Description
+1	cat filename---Displays a filename
+2	cd dirname  ---   Moves you to the identified directory
+3	cp file1 file2--- Copies one file/directory to the specified location
+4	file filename---Identifies the file type (binary, text, etc)
+5	find filename dir---Finds a file/directory
+6	head filename---Shows the beginning of a file
+7	less filename---Browses through a file from the end or the beginning
+8	ls dirname---Shows the contents of the directory specified
+9	mkdir dirname---Creates the specified directory
+10	more filename---Browses through a file from the beginning to the end
+11	mv file1 file2---Moves the location of, or renames a file/directory
+12	pwd   ---   Shows the current directory the user is in
+13	rm filename ---Removes a file
+14	rmdir dirname ---Removes a directory
+15	tail filename---Shows the end of a file
+16	touch filename---Creates a blank file or modifies an existing file or its attributes
+17	whereis filename---Shows the location of a file
+18	which filename ---Shows the location of a file if it is in your PATH
+
+---------------------------------Table end---------------------------
+
+
+
+You can use Manpage Help to check complete syntax for each command mentioned here.
+
+
+
+THE 'df' COMMAND:
+
+
+
+The first way to manage your partition space is with the 'df'(disk free) command. The command df -k(disk free) displays the 'disk space usage'
+in kilobytes, as shown below.
+
+
+
+---------
+infinity@infinityv:~/Downloads$ df -k
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev             1840408       0   1840408   0% /dev
+tmpfs             379760    1708    378052   1% /run
+/dev/sda3       20539216 7515264  11957560  39% /
+tmpfs            1898780   74196   1824584   4% /dev/shm
+tmpfs               5120       4      5116   1% /run/lock
+tmpfs            1898780       0   1898780   0% /sys/fs/cgroup
+/dev/loop0         56960   56960         0 100% /snap/core18/2284
+/dev/loop1         56960   56960         0 100% /snap/core18/2344
+/dev/loop2         45824   45824         0 100% /snap/snapd/15534
+/dev/loop3         13952   13952         0 100% /snap/ubuntu-mate-welcome/709
+/dev/loop4         63488   63488         0 100% /snap/core20/1434
+/dev/loop5         15616   15616         0 100% /snap/ubuntu-mate-welcome/657
+/dev/loop6         63488   63488         0 100% /snap/core20/1405
+/dev/loop7           128     128         0 100% /snap/software-boutique/57
+/dev/loop8         44800   44800         0 100% /snap/snapd/15177
+/dev/loop9           128     128         0 100% /snap/software-boutique/54
+/dev/sda1         497696    5356    492340   2% /boot/efi
+/dev/sda4       70344904 3965964  62762532   6% /home
+tmpfs             379756      24    379732   1% /run/user/1000
+---------
+
+
+Some of the directories, such as '/devices', shows '0' in the kilobytes, used , and avail columns as well as '0%' for capacity. These are special (or virtual) file systems, and although they reside on the disk under /, by themselves they do not consume disk space.
+
+The 'df -k' output is generally the same on all Unix systems. Here is what it usually includes
+
+
+----------------------------------Table------------------------------
+Sr.No.	Column & Description
+1	Filesystem   The physical file system name
+2	kbytes       Total kilobytes of space available on the storage medium
+3	used         Total kilobytes of space used (by files)
+4	avail        Total kilobytes available for use
+5	capacity     Percentage of total space used by files
+6	Mounted on   What the file system is mounted on
+
+--------------------------------Table end----------------------------
+
+
+
+
+You can use the -h(human readable) option to display the output in a format that shows the size in easier-to-understand notation.
+
+
+THE 'du' COMMAND
+
+
+The 'du' (disk usage) command enables you to specify directories to show disk space usage on a particular directory.
+
+The command is helpful if you want to determine how much space a particular directory is  taking. The following command displays number of blocks consumed by each directory. A single block may take either 512 Bytes or 1 Kilo Byte depending on your system.
+
+
+---------
+infinity@infinityv:~$ du -lh Desktop
+32K	./cron_trial
+12M	./AWS/webshots/Port forwarding
+22M	./AWS/webshots
+8.0K	./AWS/keys
+79M	./AWS
+79M	.
+infinity@infinityv:~$ 
+
+
+---------
+
+
+
+You can use the '-h' (human readable) option to display the output in a format that shows the size in easier-to understand notation.
+
+
+The '-h' options makes the ouput easier to comprehend
+
+---------
+
+infinity@infinityv:~$ du -h Desktop
+32K	Desktop/cron_trial
+12M	Desktop/AWS/webshots/Port forwarding
+22M	Desktop/AWS/webshots
+8.0K	Desktop/AWS/keys
+79M	Desktop/AWS
+79M	Desktop
+---------
+
+
+MOUNTING THE FILE SYSTEM
+
+
+A file system must be mounter in order to be usable by the system. To see what is currently mounted ( available for use) on your system, use the following command
+
+
+
+'mount'
+
+---------
+infinity@infinityv:~$ mount
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,noexec,relatime,size=1840408k,nr_inodes=460102,mode=755,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=379760k,mode=755,inode64)
+/dev/sda3 on / type ext4 (rw,relatime,errors=remount-ro)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,inode64)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k,inode64)
+tmpfs on /sys/fs/cgroup type tmpfs (ro,nosuid,nodev,noexec,mode=755,inode64)
+cgroup2 on /sys/fs/cgroup/unified type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate)
+cgroup on /sys/fs/cgroup/systemd type cgroup (rw,nosuid,nodev,noexec,relatime,xattr,name=systemd)
+pstore on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+efivarfs on /sys/firmware/efi/efivars type efivarfs (rw,nosuid,nodev,noexec,relatime)
+none on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime,mode=700)
+cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb)
+cgroup on /sys/fs/cgroup/devices type cgroup (rw,nosuid,nodev,noexec,relatime,devices)
+cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup (rw,nosuid,nodev,noexec,relatime,cpu,cpuacct)
+cgroup on /sys/fs/cgroup/memory type cgroup (rw,nosuid,nodev,noexec,relatime,memory)
+cgroup on /sys/fs/cgroup/cpuset type cgroup (rw,nosuid,nodev,noexec,relatime,cpuset)
+cgroup on /sys/fs/cgroup/perf_event type cgroup (rw,nosuid,nodev,noexec,relatime,perf_event)
+cgroup on /sys/fs/cgroup/net_cls,net_prio type cgroup (rw,nosuid,nodev,noexec,relatime,net_cls,net_prio)
+cgroup on /sys/fs/cgroup/pids type cgroup (rw,nosuid,nodev,noexec,relatime,pids)
+cgroup on /sys/fs/cgroup/misc type cgroup (rw,nosuid,nodev,noexec,relatime,misc)
+cgroup on /sys/fs/cgroup/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio)
+cgroup on /sys/fs/cgroup/freezer type cgroup (rw,nosuid,nodev,noexec,relatime,freezer)
+cgroup on /sys/fs/cgroup/rdma type cgroup (rw,nosuid,nodev,noexec,relatime,rdma)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=28,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=16203)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime,pagesize=2M)
+mqueue on /dev/mqueue type mqueue (rw,nosuid,nodev,noexec,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime)
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+configfs on /sys/kernel/config type configfs (rw,nosuid,nodev,noexec,relatime)
+/var/lib/snapd/snaps/core18_2284.snap on /snap/core18/2284 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/core18_2344.snap on /snap/core18/2344 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/snapd_15534.snap on /snap/snapd/15534 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/ubuntu-mate-welcome_709.snap on /snap/ubuntu-mate-welcome/709 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/core20_1434.snap on /snap/core20/1434 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/ubuntu-mate-welcome_657.snap on /snap/ubuntu-mate-welcome/657 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/core20_1405.snap on /snap/core20/1405 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/software-boutique_57.snap on /snap/software-boutique/57 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/snapd_15177.snap on /snap/snapd/15177 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/var/lib/snapd/snaps/software-boutique_54.snap on /snap/software-boutique/54 type squashfs (ro,nodev,relatime,x-gdu.hide)
+/dev/sda1 on /boot/efi type vfat (rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro)
+/dev/sda4 on /home type ext4 (rw,relatime)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=379756k,mode=700,uid=1000,gid=1000,inode64)
+gvfsd-fuse on /run/user/1000/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+infinity@infinityv:~$ 
+---------
+
+
+The '/mnt' directoy, by the Unix convention, is where temporary mounts(such as CDROM drives, remote network drives, and floppy drives) are located. If you need to mount a file system, you can use the mount command with the following syntax.
+
+'mount -t file_system_type device_to_mount directory_to_mount_to'
+
+
+For example, if you wanto to mount a 'CD-ROM' to the directory '/mnt/cdrom', you can type-
+
+
+
+'mount -t iso9660 /dev/cdrom /mnt/cdrom'
+
+
+This assumes that your CD-ROM device is called '/dev/cdrom/' and that you want to mount it to 'mnt/cdrom'. Refer to the mount man page for more speicific information or type 'mount -h' at the command line for help information.
+
+After mounting, you can use the 'cd' command to navigate the newly available file system through the mount point you just made.
+
+
+UNMOUNTING THE FILE SYSTEM
+
+
+To unmount (remove) the file system from your system, use the umount command by identifying the mount point or device.
+
+For example, to 'unmount point or device'.
+
+'umount /dev/cdrom'
+
+
+
+The 'mount command' enables you to acces your file systems, but on most modern Unix systems, the automount function makes this process invisible to the user and requires no intervention.
+
+
+USER AND GROUP QUOTAS
+
+
+
+The user and group quotas provide the mechanisms by which the mount of space used by a single user or all users within a specific group can be limited to a value defined by the administrator.
+
+Quotas operate around two limits that allow the user to take some action if the amount of space or number of disk blocks start to exceed the administrator.
+
+Quotas operate around two limits that allow the user to take some action if the amount of space or number of disk blocks start to exceed the administrator defined limits.
+
+Soft limit : if the user exceeds the limit defined, there is a grace period that allows the user to free up some space.
+
+Hard limit : When the hard limit is reached, regardless of the grace period, no further files or blocks can be allocated.
+
+
+------------------------------Table-----------------------------------
+
+There are a number of commands to administer quotas −
+
+Sr.No.	Command & Description
+1	quota  Displays disk usage and limits for a user of group
+2	edquota  This is a quota editor. Users or Groups quota can be edited using this command
+3	quotacheck  Scans a filesystem for disk usage, creates, checks and repairs quota files
+4	setquota  This is a command line quota editor
+5	quotaon    This announces to the system that disk quotas should be enabled on one or more filesystems
+6	quotaoff   This announces to the system that disk quotas should be disabled for one or more filesystems
+7	repquota   This prints a summary of the disc usage and quotas for the specified file systems
+
+
+------------------------------Table end-------------------------------
+
+
+
+You can use Manpage Help to check complete syntax for each command mentioned here.
+
+
+
+
+____________________
+USER ADMINISTRATION|
+___________________|
+
+
+
+There are three types of accounts on a Unix system
+
+
+Root account:
+
+
+This is also called 'Superuser' and would have complete and unfettered control of the system. A superuser can run any commands without any restriction. This user should be assumed as a 'system administrator'
+
+
+System accounts:
+
+
+System accounts are those needed for the operation of system-specific components for example mail accounts and the 'sshd' accounts. These accounts are usually needed for some specific function of your system, and any modification to them could adversely affect the system.
+
+User accounts:
+
+
+User accounts provide interactive access to the system for users and groups of users. General users are typically assigned to these accounts and usually have limited access to critical system files and directories.
+
+
+Unix supports a concept of 'Group Account' which logically groups a number of accounts. Every account would be a part of another group account. A Unix group plays important role in handling file permissions and process management.
+
+
+MANAGING USERS AND GROUPS
+
+
+There are four user administration files :
+
+'/etc/passwd' : Keeps the user account and password information. This file holds the majority of information about accounts on the Unix system
+
+'/etc/shadow' : Holds the encrypted password of the corresponding account. Not all the systems support this file.
+
+'/etc/group' : This file contains the group information for each account
+
+'/etc/gshadow': This file contains secure group account information.
+
+Check all the above files using the 'cat' command 
+
+The following table lists out commands that are avaialable on majority of Unix systems to create and manage accounts and groups:
+
+
+------------------------------Table---------------------------------
+Sr.No.	Command & Description
+1	useradd    Adds accounts to the system
+2	usermod    Modifies account attributes
+3	userdel    Deletes accounts from the system
+4	groupadd    Adds groups to the system
+5	groupmod    Modifies group attributes
+6	groupdel    Removes groups from the system
+
+----------------------------------Table end--------------------------
+
+
+
+CREATE A GROUP :
+
+
+We will now understand how to create a group. For this, we need to create groups before creating any account otherwise, we can make use of the existing groups in our system. We have all the groups listed in '/etc/group' file.
+
+All the default groups are system accont specific groups and it not recommended to use them for ordinary accounts. So, folowing is the syntax to create a new group account.
+
+'groupadd [-g gid] [-o]] [-r] [-f] groupname'
+
+The following are the parameters
+
+
+----------------------------------Table------------------------------
+Sr.No.	Option & Description
+1	-g GID    The numerical value of the group's ID
+2	-o        This option permits to add group with non-unique GID
+3	-r        This flag instructs groupadd to add a system account
+4	-f        This option causes to just exit with success status, if the specified group already exists. With -g, if the specified GID already exists, other (unique) GID is chosen
+5	groupname  Actual group name to be created
+
+------------------------Table end------------------------------------
+
+
+If you do not specify any parameter, then the syntax makes use of the default values.
+
+Following example creates a developers group with default values, which is very much acceptable for most of the administrators.
+
+'groupadd developers'
+
+
+
+
+
+MODIFY A GROUP:
+
+
+To modify a group, use the 'groupmod' syntax
+
+
+'groupmod -n new_modified_group_name old_group_name'
+
+
+To change the developers_2 group name to developer, type
+
+'groupmod -n developer developer_2'
+
+Here is how you will change the financial GID to 545
+
+'groupmod -g 545 developer'
+
+
+
+
+
+DELETE A GROUP:
+
+
+
+
+We will now understand how to delet a group. To delete an existing group, all you need is the 'groupdel' command and the 'group name'. To delete the financial group, the command is
+
+
+'groupdel developer'
+
+
+This removes only the group, not the files associated with the group. The files are still accessible by thier owners.
+
+
+CREATE AN ACCOUNT:
+
+
+Let us see how to create a new account on your Unix system. Following is the syntax to create a user's account
+
+
+'useradd -d homedir -g groupname -m -s shell -u userid accountname'
+
+
+
+The following table lists out the parameters:
+
+
+-----------------------------------Table-----------------------------
+Sr.No.	Option & Description
+1	-d homedir    Specifies home directory for the account
+2	-g groupname  Specifies a group account for this account
+3	-m            Creates the home directory if it doesn't exist
+4	-s shell      Specifies the default shell for this account
+5	-u userid     You can specify a user id for this account
+6	accountname   Actual account name to be created
+
+----------------------------------Table end--------------------------
+
+
+If you do not specify any parameter, then the system makes use of the default values. The 'useradd' command modifies the '/etc/passwd', 'etc/shadow', and '/etc/group' files and creates a home directory.
+
+
+Following is the example that creates an account 'okinawa', setting its home directory to '/home/okinawa' and the group as 'developers'. This user would have 'Bash shell' assigned to it.
+
+
+'useradd -d /home/okinawa -g developers -s /bin/bash okinawa'
+
+
+
+Before issuing the above command, make sure you already have the developers group created using the 'groupadd' command.
+
+Once an account is created you can set its password using 'passwd' command as follows
+
+
+'passwd okinawa'
+Changing passwd for user okinawa.
+New UNIX password:
+Retype new UNIX password:
+Passwd: all authentication tokens updated successfully.
+
+
+When you type 'passwd accountname', it gives you an option to change the password, provided you are a superuser. Otherwise, you can change just your password using the same command but without specifying your account name.
+
+
+
+MODIFY AN ACCOUNT:
+
+
+
+The 'usermod' command enables you to make changes to an existing account from the command line. It uses the same arguments as the 'useradd' command, plus the '-I' argument, which allows you to change the account name.
+
+
+For ex, to change the account name 'okinawa' to 'okinawa88' and to change the directory accordingly, you will need to issue the following command.
+
+'usermod -d /home/okinawa88 -m -l okinawa okinawa88'
+
+
+DELETE AN ACCOUNT:
+
+
+The 'userdel' command can be used to delete an existing user. This is a very dangerous command if not used with caution.
+
+
+There is only one argument or option available for the command .r, for removing the account's home directory and mail file.
+
+For ex, to remove account 'okinawa88', issue the following command.
+
+'userdel -r okinawa88'
+
+
+If you want to keep the home directory for backup purposes, omit the '-r' option. You can remove the home directoy as needed at a later time.
+
+
+
+
+__________________
+SYSTEM PERFORMANCE|
+__________________|
+
+
+
+
+In this, we will have few free tools that are available to monitor and manage performance on Unix systems. These tools also provide guidelines on how to diagnose and fix performance problems in the Unix environment
+
+
+Unix has following major resource types that need to be monitored and tuned
+
+
+-CPU
+-Memory
+-Disk space
+-Communications lines
+-I/O Time
+-Networking Time
+-Applications programs
+
+
+
+
+PERFORMANCE COMPONENTS :
+
+
+The following table lists out five major components which take up the system time
+
+-----------------------------Table-----------------------------------
+
+
+Sr.No.	Component & Description
+1	User State CPU--->The actual amount of time the CPU spends running the users’ program in the user state. It includes the time spent executing library calls, but does not include the time spent in the kernel on its behalf
+2	System State CPU--->This is the amount of time the CPU spends in the system state on behalf of this program. All I/O routines require kernel services. The programmer can affect this value by blocking I/O transfers
+3	I/O Time and Network Time--->This is the amount of time spent moving data and servicing I/O requests
+4	Virtual Memory Performance--->This includes context switching and swapping
+5	Application Program--->Time spent running other programs - when the system is not servicing this application because another application currently has the CPU
+
+--------------------------------Table end----------------------------
+
+
+
+PERFORMANCE TOOLS
+
+Unix provides following important tools to measure and finetune Unix systems Performance.
+
+
+------------------------------------Table----------------------------
+
+Sr.No.	Command & Description
+1	nice/renice   Runs a program with modified scheduling priority
+2	netstat       Prints network connections, routing tables, interface statistics, masquerade connections, and multicast memberships
+3	time     Helps time a simple command or give resource usage
+4	uptime   This is System Load Average
+5	ps       Reports a snapshot of the current processes
+6	vmstat   Reports virtual memory statistics
+7	gprof    Displays call graph profile data
+8	prof     Facilitates Process Profiling
+9	top      Displays system tasks
+
+-----------------------------Table end-------------------------------
+
+
+
+You can use 'Manpage' Help to check complete syntax for each command mentioned here.
+
+
+
+
+_______________
+SYSTEM LOGGING|
+______________|
+
+
+
+
+In this , Unix systems have a very flexible and powerful logging systems, which enables you to record amost anything  you can imagine and then manipulate the logs to retrieve the information you require.
+
+
+many versions of Unix provide a general-purpose logging facility called 'syslog'. Individual programs that need to have information logged, send the information to syslog.
+
+Unix syslog is a host-configurable, uniform system loggin facility. The system uses a centralized system logging process that runs the program '/etc/syslogd' or '/etc/syslog'.
+
+
+The operation of the system logger is quite straightforward. Programs send their log entries to 'syslog', which consults the configuration file '/etc/syslogd.conf' or '/etc/syslog' and , when a match is found, writes the log message to the desired log file.
+
+There are four basic syslog terms that you should understand
+
+
+-----------------------------Table------------------------------------
+
+Sr.No.	Term & Description
+1	Facility--->The identifier used to describe the application or process that submitted the log message. For example, mail, kernel, and ftp.
+2	Priority--->An indicator of the importance of the message. Levels are defined within syslog as guidelines, from debugging information to critical events.
+3	Selector--->A combination of one or more facilities and levels. When an incoming event matches a selector, an action is performed.
+4	Action--->What happens to an incoming message that matches a selector — Actions can write the message to a log file, echo the message to a console or other device, write the message to a logged in user, or send the message along to another syslog server.
+------------------------------Table end------------------------------
+
+
+
+SYSLOG FACILITIES:
+
+
+
+We will now understand about the syslog facilities. Here are the available facilities for the selector. Not all facilities are present on all the versions of Unix.
+
+
+-----------------------------------Table-----------------------------
+
+Facility	Description
+1    auth       Activity related to requesting name and password (getty, su, login)
+2    authpriv   Same as auth but logged to a file that can only be read by selected users
+3    console    Used to capture messages that are generally directed to the system console
+4    cron       Messages from the cron system scheduler
+5    daemon     System daemon catch-all
+6    ftp        Messages relating to the ftp daemon
+7    kern       Kernel messages
+8    local0.local7   Local facilities defined per site
+9    lpr             Messages from the line printing system
+10    mail           Messages relating to the mail system
+11    mark           Pseudo-event used to generate timestamps in log files
+12    news           Messages relating to network news protocol (nntp)
+13    ntp            Messages relating to network time protocol
+14    user           Regular user processes
+15    uucp           UUCP subsystem
+
+
+--------------------------------Table end----------------------------
+
+
+
+SYSLOG PRIORITIES:
+
+
+
+
+The syslog priorities are summarized in the following table
+
+
+--------------------------Table--------------------------------------
+
+
+
+Sr.No.	Priority & Description
+1	emerg   Emergency condition, such as an imminent system crash, usually broadcast to all users
+2	alert   Condition that should be corrected immediately, such as a corrupted system database
+3	crit    Critical condition, such as a hardware error
+4	err     Ordinary error
+5	Warning   Warning
+6	notice    Condition that is not an error, but possibly should be handled in a special way
+7	info      Informational message
+8	debug     Messages that are used when debugging programs
+9	none      Pseudo level used to specify not to log messages
+
+---------------------------------Table end---------------------------
+
+
+The combination of facilities and facilities and levels enabled you to be discerning about what is logged and where that information goes. 
+
+As each program sends its messages dutifully to the system logger , the logger makes decisions on what to keep track of and what to discard based on the levels defined in the selector. 
+
+When you specify a level, the system will keep track of everything at tha level and higher. 
+
+THE '/etc/syslog.conf FILE
+
+
+The '/etc/syslog.conf' file controls where messages are logged. A typical syslog.conf file might look like this
+
+
+------------------------
+*.err;kern.debug;auth.notice /dev/console
+daemon,auth.notice           /var/log/messages
+lpr.info                     /var/log/lpr.log
+mail.*                       /var/log/mail.log
+ftp.*                        /var/log/ftp.log
+auth.*                       @prep.ai.mit.edu
+auth.*                       root,amrood
+netinfo.err                  /var/log/netinfo.log
+install.*                    /var/log/install.log
+*.emerg                      *
+*.alert                      |program_name
+mark.*                       /dev/console
+------------------------
+
+
+
+Each lne of the file contains two parts
+
+-A 'message selector' that specifies which kind of messages to log. For example, all error messages or all debugging messages from the kernel.
+-An 'action field' that says what should be done with the messages. For exa, put it in a file or send the message to a user's terminal.
+
+Following are the notable points for the above configuration
+
+
+-Message selectors have two parts: 'a facility' and 'a priority'. For example, 'kern.debug' selects all debug messages(the priority) generated by the kernel (the facility)
+
+
+-Message selector kern.debug selects all prioritise that are greated than debug.
+
+-An asterisk in place of either the facility or the priority indicates 
+"all". For ex, "*.debug" means all debug messages, while "kern.*" means all the messages generated by the kernel.
+
+-You can also use commas to specify multiple facilities. Two or more selectors can be grouped together by using a 'semicolon'.
+
+
+
+LOGGING ACTIONS:
+
+
+
+
+The action field specific one of five actions --
+
+-log message to a file or a device. For example, '/var/log/lpr.log' or '/dev/console'
+
+-Send a message to a user. You can specify multiple usernames by separating them with commas; for ex, root , okinawa.
+
+-Send a message to all users. In this case, the action field consists of an asterisk. For example, *.
+-Pipe the message to a program. in this case, the program is specified after the pipe symbol(|).
+
+-Send the message to the syslog on another host. In this case, the action field consists of a hostname, preceded by an at sign; for example, @googlekittu.com
+
+
+THE LOGGER COMMAND:
+
+
+
+Unix provides the 'logger' command, which is an extremely useful command to deal with the system logging. The 'logger' command sends logging messages to the 'syslogd daemon', and consequently provokes system logging.
+
+
+This means we can check from the commandline at any time the 'syslogd' daemon and its configuration. The logger command provides a method for adding one-line entries to the system log file from the command line.
+
+The format of the command is :
+
+
+'logger [i] [-f file ] [-p priority] [-t tag] [message]...'
+
+
+Here  is the detail of the parameters
+
+
+----------------------------------Table------------------------------
+
+Sr.No.	Option & Description
+1	-f filename   Uses the contents of file filename as the message to log.
+2	-i         Logs the process ID of the logger process with each line.
+3	-p priority   Enters the message with the specified priority (specified selector entry); the message priority can be specified numerically, or as a facility.priority pair. The default priority is user.notice.
+4	-t tag     Marks each line added to the log with the specified tag.
+5	message    The string arguments whose contents are concatenated together in the specified order, separated by the space.
+
+
+-----------------------------Table end-------------------------------
+
+
+
+
+
+You can use Manpage help to check complete syntax for this command
+
+
+LOG ROTATION:
+
+
+
+Log files have the propensity to grow very fast and consume large amounts of disk space. To enable log rotations, most distributions use tools such a 'newsyslog' or 'logrotate'.
+
+
+These tools should be called on a frequent time interval using 'cron daemon'. Check the man pages for 'newsyslog' or 'logrotate' for more details.
+
+
+IMPORTANT LOG LOCATIONS:
+
+
+All the system applications create their log files in '/var/log' and its sub-directories. Here are few important application and their corresponding log directories.
+
+
+
+------------------------------------Table------------------------------
+
+
+Application	        Directory
+httpd			/var/log/httpd
+samba			/var/log/samba
+cron			/var/log/
+mail			/var/log/
+mysql			/var/log/
+
+
+------------------------------------Table end--------------------------
+
+
+_________________
+SIGNALE AND TRAPS|
+_________________|
+
+
+
+Signals are software interrupts sent to a program to indicate that an important event has occured. The events can vary from user requests to illegal memory access errors. Some signals , such as the interrupt signal, indicate that a user has asked the program to do something that is not in the usual flow of control.
+
+The following table lists out common signals you might encounter and want to use in your programs
+
+
+------------------------------Table-----------------------------------
+
+Signal Name	Signal Number	Description
+SIGHUP	1	Hang up detected on controlling terminal or death of controlling process
+SIGINT	2	Issued if the user sends an interrupt signal (Ctrl + C)
+SIGQUIT	3	Issued if the user sends a quit signal (Ctrl + D)
+SIGFPE	8	Issued if an illegal mathematical operation is attempted
+SIGKILL	9	If a process gets this signal it must quit immediately and will not perform any clean-up operations
+SIGALRM	14	Alarm clock signal (used for timers)
+SIGTERM	15	Software termination signal (sent by kill by default)
+
+
+--------------------------------Table end-----------------------------
+
+
+
+LIST OF SIGNALS
+
+
+There is an easy way to list down all the signals supported by your system. Just issue the 'kill -l' command and it would display all the supported signals.
+
+
+
+
+$ kill -l
+ 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL
+ 5) SIGTRAP      6) SIGABRT      7) SIGBUS       8) SIGFPE
+ 9) SIGKILL     10) SIGUSR1     11) SIGSEGV     12) SIGUSR2
+13) SIGPIPE     14) SIGALRM     15) SIGTERM     16) SIGSTKFLT
+17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP
+21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU
+25) SIGXFSZ     26) SIGVTALRM   27) SIGPROF     28) SIGWINCH
+29) SIGIO       30) SIGPWR      31) SIGSYS      34) SIGRTMIN
+35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3  38) SIGRTMIN+4
+39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
+43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12
+47) SIGRTMIN+13 48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14
+51) SIGRTMAX-13 52) SIGRTMAX-12 53) SIGRTMAX-11 54) SIGRTMAX-10
+55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7  58) SIGRTMAX-6
+59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
+63) SIGRTMAX-1  64) SIGRTMAX
+
+
+
+The actual list of signals varies between Solaris, HP-UX and Linux.
+
+
+
+DEFAULT ACTIONS:
+
+Every signal has a default action associated with it. The default action is the action that a script or program performs when it receives a signal.
+
+Some of the possible default actions are :
+
+-Terminate the process
+-Ignore the signal
+-Dump core. This creates a file called 'core' containing the memory image of the process when it received the signal.
+-Stop the process
+-Continue a stopped process
+
+
+SENDING SIGNALS:
+
+
+There are several methods of delivering signals to a program or script. One of the most common is for a user to type 'CONTROL-C' or the 'INTERRUPT KEY' while a script is executing.
+
+When you press 'Ctrl+c' key, a 'SIGINT' is sent to the script and as per defined default action script terminates.
+
+The other common method for delivering signals is to use the 'kill command', the syntax of which is as follows
+
+'kill -signal pid'
+
+Here 'signal' is either the number or name of the signal to deliver and 'pid' is the process ID that the signal should be sent to. For example, 
+
+'kill -l 1002'
+
+The above command send the 'HUP' or hang-up signal to the program that is running with 'process ID 1002'. To send a 'kill' signal to the same process, use the following command.
+
+'kill -9 1002'
+
+This kills the process running with 'Process ID 1002'.
+
+
+
+
+TRAPPING SIGNALS:
+
+
+
+
+When you press 'ctrl+c' or break key at your terminal during execution of a shell program, normally that program is immediately terminated, and your command prompt returns. This may not always be desirable. For instance, you may end up leaving a bunch of temporary files that won't get cleaned up.
+
+
+Trapping these signals is quite easy, and the trap command has the following syntax
+
+
+'trap commands signals'
+
+
+Here 'command' can be any valid Unix command, or even a user-defined function, and signal can be a list of any number of signals you want to trap.
+
+There are two common uses for trap in shell scripts
+
+-clean up temporary files
+-Ignore signals
+
+
+CLEANING UP TEMPORARY FILES
+
+
+As an example of the trap command, the following shows how you can remove same files and then exit if someone tries to abort the program from the terminal.
+
+
+'trap "rm -f $WORKDIR/workl$$ $WORKDIR/dataout$$; exit" 2'
+
+
+From the point in the shell program that this trap is executed, the two files 'WORK1$$' and 'datatout$$' will be automatically removed if signal number 2 is received by the program.
+
+Hence, if the user interrupt the execution of the program after this trap is executed, you can be assured that these two files will be cleaned up. The 'exit' command that follows the 'rm' is necessary because without it, the execution would contineue in the program at the point that it left of when the signal was received. 
+
+
+Signal number 1 is generated for 'hangup'. Either someone intentionally  hangs up the line or the line get accidentally disconnected.
+
+You cna modify the preceding trap to also remove the two specified files in this case by adding signal number 1 to the list of signals. 
+
+'trap "rm $WORKDIR/work1$$ $WORKDIR/dataout$$; exit" 1 2'
+
+
+Now these files will be removed if the line gets hung up or if the ctrl+c key get pressed.
+The commands specified to trap must be enclosed in quotes, If they contain more than one command. Also note that the shell scans the command lines at the time that the trap command get executed and also when one of the listed sigals are received. 
+
+
+'trap "rm $WORKDIR/work1$$ $WORKDIR/dataout$$;exit" 1 2'
+
+
+IGNORING SIGNALS:
+
+
+If the command listed for trap is null, the specified signal will be ignored when received. Full example, the command
+
+
+-'trap "" 2'
+
+
+This specifies that the interrupt signal is to be ignored. You might want to ignore certain signals when performing an operation that you don't want to be interrupted. You can specify multiple signals to be ignored as follows.
+
+
+
+-'trap '' 1 2 3 15'
+
+
+
+Note that the first argument must be specified for a signal to be ignored and is not equivalent to writing the following, which as a separate meaning of its own.
+
+
+'trap 2'
+
+
+If you ignore a signal, all subshells also ignore that signal. However, if you specify an action to be taken on the receipt of a signal, all subshells will still take the default action on receipt of that signal. 
+
+
+RESETTING TRAPS:
+
+
+After you've changed the default action to be taken on receipt of a signal, you can change it back again with the trap if you simply omit the first argument, so.
+
+
+'trap 1 2'
+
+
+This resets the action to be taken on the receipt of signals 1 or 2 back to the default.
+
+
 
