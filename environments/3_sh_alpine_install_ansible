@@ -1,0 +1,11 @@
+#!/bin/bash
+
+apk add python3 py3-pip
+python3 -m venv ~/env1
+source ~/env1/bin/activate
+
+pip install --upgrade pip  ansible-core argcomplete pyyaml
+activate-global-python-argcomplete
+source ~/.bash_completion 
+
+ansible-galaxy collection install community.general

@@ -1,0 +1,31 @@
+ssh-keygen
+ssh-copy-id ansible@ip
+mkdir -p \
+./inventory/prod/{group_vars,host_vars} \
+#inventory/stage/{group_vars,host_vars} \
+./inventory/test/{group_vars,host_vars}
+
+mkdir playbooks roles
+
+cat > ./inventory/test/hosts<<eof
+[webservers]
+
+[dbservers]
+
+eof
+
+ansible-config init --disabled -t all > ./ansible.cfg
+
+#sed 's/^roles_path.*roles$/\./roles/' ./ansible.cfg
+#sed 's/^;.*auto$/interpreter_python=auto_silent/' ./ansible.cfg
+
+#private_key_file=~/.ssh(location) in ansible.cfg
+
+#;host_key_checking=True to host_key_checking=False
+
+#Now start testing using 
+#'ansible all -m ping'
+
+
+#to start roles,
+#'ansible-galaxy init <roleName>'
